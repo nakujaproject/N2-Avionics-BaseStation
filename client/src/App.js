@@ -3,18 +3,22 @@ import { useEffect, useState } from 'react';
 
 import './App.css';
 import LineChart from './components/LineChart';
+import useSessionStorage from './hooks/useSessionStorage';
 
 const socket = io('http://localhost:5000/');
 
 function App() {
-	const [y, setY] = useState([]);
-	const [x, setX] = useState([]);
+	const [y, setY] = useSessionStorage('x', []);
+	const [x, setX] = useSessionStorage('y', []);
 
-	const [timestamp, setTimestamp] = useState(0);
-	const [state, setState] = useState(0);
-	const [altitude, setAltitude] = useState(0);
-	const [latitude, setLatitude] = useState(0);
-	const [longitude, setLongitude] = useState(0);
+	const [timestamp, setTimestamp] = useSessionStorage('timestamp', 0);
+	const [state, setState] = useSessionStorage('state', 0);
+	const [altitude, setAltitude] = useSessionStorage('altitude', 0);
+	const [latitude, setLatitude] = useSessionStorage('latitude', 0);
+	const [longitude, setLongitude] = useSessionStorage('longitude', 0);
+
+	const [ignitionStatus, setIgnitionStatus] = useState(false);
+	const [ejectionStatus, setEjectionStatus] = useState(false);
 
 	useEffect(() => {
 		// client-side
@@ -59,10 +63,12 @@ function App() {
 	}, [x, y]);
 
 	const handleIgnition = () => {
+		setIgnitionStatus(true);
 		socket.emit('ignite', { startIgnition: true });
 	};
 
 	const handleEjection = () => {
+		setEjectionStatus(true);
 		socket.emit('eject', { ejectParachute: true });
 	};
 
@@ -81,8 +87,12 @@ function App() {
 					padding: '10px',
 				}}
 			>
-				<button onClick={handleIgnition}>Start Ignition</button>
-				<button onClick={handleEjection}>Eject Parachute</button>
+				<button onClick={handleIgnition}>
+					{ignitionStatus ? 'Igniting' : 'Start Ignition'}
+				</button>
+				<button onClick={handleEjection}>
+					{ejectionStatus ? 'Ejecting' : 'Eject Parachute'}
+				</button>
 			</div>
 
 			<div
