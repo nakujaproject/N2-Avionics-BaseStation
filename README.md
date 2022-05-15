@@ -10,7 +10,7 @@ We use environment variables to allows us to have personalized configurations, i
 
 ## How to run
 
-1.In the root directory create a .env file
+1. In the root directory create a .env file
 
 ### `touch .env`
 
@@ -18,19 +18,19 @@ Add the following required values in the .env file
 
 ### `BROKER_URL="mqtt://< broker hostname or ip address>:1883"`
 
-1.In the client directory, run:
+2. In the client directory, run:
 
 ### `npm install`
 
 installs the necessary dependencies for the client app
 
-2: In the server directory, run:
+3. In the server directory, run:
 
 ### `npm install`
 
 installs the necessary dependencies for the server app
 
-3: In the server directory, you can run:
+4. In the server directory, you can run:
 
 ### `npm run dev`
 
