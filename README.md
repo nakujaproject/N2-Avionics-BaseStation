@@ -4,7 +4,7 @@
 
 We use environment variables to allows us to have personalized configurations, it also makes it easy to deploy our projects without having to store sensitive values in our codebase.
 
-### `BROKER_URL=mqtt://<broker ip address>/:< broker port> `
+### `BROKER_URL=mqtt://<broker hostname or ip address>/:< broker port> `
 
 ### `PORT=< the port used to start the server default is 5000>`
 
@@ -16,7 +16,7 @@ We use environment variables to allows us to have personalized configurations, i
 
 Add the following required values in the .env file
 
-### `BROKER_URL="mqtt://< broker hostname or ip address>:1883"`
+### `BROKER_URL=mqtt://< broker hostname or ip address>:<broker port>`
 
 2. In the client directory, run:
 
