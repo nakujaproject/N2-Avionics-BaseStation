@@ -37,9 +37,9 @@ In the root directory create a .env file
 
 Add the following values to the .env file
 
-### `BROKER_URL=mqtt://< broker hostname or ip address>:<broker port>`
+#### `BROKER_URL=mqtt://< broker hostname or ip address>:<broker port>`
 
-### `PORT=< server port>`
+#### `PORT=< server port>`
 
 ## Project structure
 
