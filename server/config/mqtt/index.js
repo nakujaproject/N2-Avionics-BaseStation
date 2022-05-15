@@ -2,7 +2,9 @@ const mqtt = require('mqtt');
 
 module.exports = (socket) => {
 	//mqtt client
-	const client = mqtt.connect(process.env.BROKER_URL);
+	const client = mqtt.connect(
+		process.env.BROKER_URL || 'mqtt://localhost:1883'
+	);
 
 	// connect to same client and subscribe to same topic name
 	client.on('connect', (connack) => {
