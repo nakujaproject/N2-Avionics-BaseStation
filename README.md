@@ -1,6 +1,22 @@
 # base-station
 
+## environment variables
+
+We use environment variables to allows us to have personalized configurations, it also makes it easy to deploy our projects without having to store sensitive values in our codebase.
+
+### `BROKER_URL=mqtt://<broker ip address>/:< broker port> `
+
+### `PORT=< the port used to start the server default is 5000>`
+
 ## How to run
+
+1.In the root directory create a .env file
+
+### `touch .env`
+
+Add the following required values in the .env file
+
+### `BROKER_URL="mqtt://< broker hostname or ip address>:1883"`
 
 1.In the client directory, run:
 
