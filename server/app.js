@@ -8,12 +8,10 @@ const mqtt = require('mqtt');
 //mqtt client
 const client = mqtt.connect('mqtt://192.168.43.29:1883');
 
-const topicName = 'esp32/altitude';
-
 // connect to same client and subscribe to same topic name
 client.on('connect', () => {
 	// can also accept objects in the form {'topic': qos}
-	client.subscribe(topicName, (err, granted) => {
+	client.subscribe('esp32/#', (err, granted) => {
 		if (err) {
 			console.log(err, 'err');
 		}

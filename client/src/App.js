@@ -10,7 +10,7 @@ function App() {
 	const [y, setY] = useState([]);
 	const [x, setX] = useState([]);
 
-	const [timeInFlight, setTimeInFlight] = useState(0);
+	const [timestamp, setTimestamp] = useState(0);
 	const [state, setState] = useState(0);
 	const [altitude, setAltitude] = useState(0);
 	const [latitude, setLatitude] = useState(0);
@@ -43,7 +43,7 @@ function App() {
 			setState(state);
 		});
 		socket.on('timestamp', (timestamp) => {
-			setTimeInFlight(timestamp);
+			setTimestamp(timestamp);
 			setY([...y, timestamp]);
 		});
 		socket.on('longitude', (longitude) => {
@@ -94,7 +94,7 @@ function App() {
 					margin: 'auto',
 				}}
 			>
-				<span>Time In Flight: {timeInFlight}</span>
+				<span>Timestamp: {timestamp}</span>
 				<span>State: {state}</span>
 				<span>Altitude: {altitude} </span>
 				<span>Longitude: {longitude}</span>
