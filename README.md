@@ -48,8 +48,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 │   └───package-lock.json
 │   └───package.json
 ├───server
+│   └───config
+|          └───mqtt
+|                └───index.js
 │   └───routes
-          └───index.js
+|          └───index.js
 │   └───.gitignore
 │   └───app.js
 │   └───package-lock.json
