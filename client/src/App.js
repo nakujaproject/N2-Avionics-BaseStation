@@ -60,13 +60,13 @@ function App() {
 	]);
 
 	const toggleIgnition = () => {
+		socket.emit('ignite', !ignitionStatus ? 'on' : 'off');
 		setIgnitionStatus(!ignitionStatus);
-		socket.emit('ignite', !ignitionStatus);
 	};
 
 	const toggleEjection = () => {
+		socket.emit('eject', !ignitionStatus ? 'on' : 'off');
 		setEjectionStatus(!ejectionStatus);
-		socket.emit('eject', !ejectionStatus);
 	};
 
 	return (

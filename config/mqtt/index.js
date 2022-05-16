@@ -22,7 +22,7 @@ module.exports = (socket) => {
 			client.publish(
 				'esp32/ignition',
 				payload,
-				{ qos: 1, retain: true },
+				{ qos: 1, retain: false },
 				(PacketCallback, err) => {
 					if (err) {
 						console.log(err, 'MQTT publish packet');
@@ -35,7 +35,7 @@ module.exports = (socket) => {
 			client.publish(
 				'esp32/ejection',
 				payload,
-				{ qos: 1, retain: true },
+				{ qos: 1, retain: false },
 				(PacketCallback, err) => {
 					if (err) {
 						console.log(err, 'MQTT publish packet');
