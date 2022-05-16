@@ -57,11 +57,11 @@ function App() {
 	]);
 
 	const handleIgnition = () => {
-		socket.emit('ignite', { startIgnition: true });
+		socket.emit('ignite', 'on');
 	};
 
 	const handleEjection = () => {
-		socket.emit('eject', { ejectParachute: true });
+		socket.emit('eject', 'on');
 	};
 
 	return (
