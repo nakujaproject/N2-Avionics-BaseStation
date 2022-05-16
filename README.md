@@ -46,7 +46,7 @@ touch .env.local
 2. Add the following values to the .env.local file
 
 ```
-REACT_APP_SERVER_URL=ws://<server ip address>:<server port> or http://<server ip address>:<server port>
+REACT_APP_SERVER_URL=ws://<server hostname or ip address>:<server port> or http://<server hostname or ip address>:<server port>
 ```
 
 ## Running with custom environment variables on server
@@ -62,6 +62,7 @@ touch .env
 ```
 BROKER_URL=mqtt://<broker hostname or ip address>:<broker port>
 PORT=<server port>
+ORIGIN=http://<client hostname or ip address>:<client port>
 ```
 
 ## Running with systemd
@@ -126,7 +127,7 @@ Description=Nakuja N2 base station software
 
 [Service]
 User=pi
-WorkingDirectory=/home/Desktop/base-station
+WorkingDirectory=/home/pi/Desktop/base-station
 ExecStart=/usr/bin/npm run prod
 Restart=on-failure
 
