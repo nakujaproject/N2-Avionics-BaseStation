@@ -5,10 +5,12 @@
 	"scripts": {
 		"start": "node app.js",
 		"dev": "concurrently \"nodemon app.js\" \"npm run dev-client\"",
-		"prod": "concurrently \"npm start \" \"npm run build-client && npm run serve-client\"",
+		"prod": "npm run client-install && npm run server-install && concurrently \"npm start \" \"npm run build-client && npm run serve-client\"",
 		"serve-client": "npm run serve --prefix ../client",
 		"build-client": "npm run build --prefix ../client",
-		"dev-client": "npm start --prefix ../client"
+		"dev-client": "npm start --prefix ../client",
+		"client-install": "npm install --prefix ../client",
+		"server-install": "npm install"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
