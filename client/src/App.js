@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import './App.css';
 import LineChart from './components/LineChart';
@@ -16,6 +16,9 @@ function App() {
 	const [altitude, setAltitude] = useSessionStorage('altitude', 0);
 	const [latitude, setLatitude] = useSessionStorage('latitude', 0);
 	const [longitude, setLongitude] = useSessionStorage('longitude', 0);
+
+	const [ignitionStatus, setIgnitionStatus] = useState(false);
+	const [ejectionStatus, setEjectionStatus] = useState(false);
 
 	useEffect(() => {
 		// client-side
@@ -56,12 +59,14 @@ function App() {
 		setY,
 	]);
 
-	const handleIgnition = () => {
-		socket.emit('ignite', 'on');
+	const toggleIgnition = () => {
+		setIgnitionStatus(!ignitionStatus);
+		socket.emit('ignite', !ignitionStatus);
 	};
 
-	const handleEjection = () => {
-		socket.emit('eject', 'on');
+	const toggleEjection = () => {
+		setEjectionStatus(!ejectionStatus);
+		socket.emit('eject', !ejectionStatus);
 	};
 
 	return (
@@ -79,8 +84,12 @@ function App() {
 					padding: '10px',
 				}}
 			>
-				<button onClick={handleIgnition}>Start Ignition</button>
-				<button onClick={handleEjection}>Eject Parachute</button>
+				<button onClick={toggleIgnition}>
+					{ignitionStatus ? 'Stop Ignition' : 'Start Ignition'}
+				</button>
+				<button onClick={toggleEjection}>
+					{ejectionStatus ? 'Stop Ejection' : 'Start Ejection'}
+				</button>
 			</div>
 
 			<div
