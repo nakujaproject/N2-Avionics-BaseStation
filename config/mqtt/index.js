@@ -21,7 +21,7 @@ module.exports = (socket) => {
 			console.log('ignition payload', payload);
 			client.publish(
 				'esp32/ignition',
-				JSON.stringify(payload),
+				payload,
 				{ qos: 1, retain: true },
 				(PacketCallback, err) => {
 					if (err) {
@@ -34,7 +34,7 @@ module.exports = (socket) => {
 			console.log('eject payload', payload);
 			client.publish(
 				'esp32/ejection',
-				JSON.stringify(payload),
+				payload,
 				{ qos: 1, retain: true },
 				(PacketCallback, err) => {
 					if (err) {
