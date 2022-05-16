@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import './App.css';
 import LineChart from './components/LineChart';
 import useSessionStorage from './hooks/useSessionStorage';
 
-const socket = io('http://localhost:5000/');
+const socket = io(process.env.REACT_APP_SERVER_URL || 'http://localhost:5000/');
 
 function App() {
 	const [y, setY] = useSessionStorage('x', []);
@@ -17,27 +17,11 @@ function App() {
 	const [latitude, setLatitude] = useSessionStorage('latitude', 0);
 	const [longitude, setLongitude] = useSessionStorage('longitude', 0);
 
-	const [ignitionStatus, setIgnitionStatus] = useState(false);
-	const [ejectionStatus, setEjectionStatus] = useState(false);
-
 	useEffect(() => {
 		// client-side
 		socket.on('connect', () => {
 			console.log('ws connected to server');
 		});
-
-		// socket.on(
-		// 	'message',
-		// 	({ timeInFlight, state, altitude, longitude, latitude }) => {
-		// 		setX([...x, altitude]);
-		// 		setY([...y, timeInFlight]);
-		// 		setTimeInFlight(timeInFlight);
-		// 		setState(state);
-		// 		setAltitude(altitude);
-		// 		setLatitude(latitude);
-		// 		setLongitude(longitude);
-		// 	}
-		// );
 
 		socket.on('altitude', (altitude) => {
 			setAltitude(altitude);
@@ -60,15 +44,23 @@ function App() {
 		socket.on('disconnect', () => {
 			console.log('ws disconnected from server');
 		});
-	}, [x, y]);
+	}, [
+		x,
+		y,
+		setAltitude,
+		setLatitude,
+		setLongitude,
+		setState,
+		setTimestamp,
+		setX,
+		setY,
+	]);
 
 	const handleIgnition = () => {
-		setIgnitionStatus(true);
 		socket.emit('ignite', { startIgnition: true });
 	};
 
 	const handleEjection = () => {
-		setEjectionStatus(true);
 		socket.emit('eject', { ejectParachute: true });
 	};
 
@@ -87,12 +79,8 @@ function App() {
 					padding: '10px',
 				}}
 			>
-				<button onClick={handleIgnition}>
-					{ignitionStatus ? 'Igniting' : 'Start Ignition'}
-				</button>
-				<button onClick={handleEjection}>
-					{ejectionStatus ? 'Ejecting' : 'Eject Parachute'}
-				</button>
+				<button onClick={handleIgnition}>Start Ignition</button>
+				<button onClick={handleEjection}>Eject Parachute</button>
 			</div>
 
 			<div
