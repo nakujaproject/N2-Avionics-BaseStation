@@ -46,7 +46,7 @@ PORT=<server port>
 
 Suppose you are in the app directory `/home/$USER/foo`
 
-1. Create file, let's called foo.service
+1. Create file, let's call it foo.service
 
 ```
 touch foo.service
@@ -61,7 +61,51 @@ Description=Foo application
 [Service]
 User=<USER>
 WorkingDirectory=/home/<USER>/foo
-ExecStart=/usr/bin/npm start
+ExecStart=/usr/bin/npm run dev
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+4. Copy unit into systemd folder
+
+```
+cp foo.service /etc/systemd/system
+```
+
+5. Reload daemon
+
+```
+systemctl daemon-reload
+```
+
+6. Enable start on boot
+
+```
+systemctl enable foo.service
+```
+
+## systemd on raspberrypi example
+
+Suppose you are in the app directory `/home/pi/Desktop/base-station`
+
+1. Create file, let's call it bs.service
+
+```
+touch bs.service
+```
+
+2. In the file add
+
+```
+[Unit]
+Description=Nakuja N2 base station software
+
+[Service]
+User=pi
+WorkingDirectory=/home/Desktop/base-station/server
+ExecStart=/usr/bin/npm run dev
 Restart=on-failure
 
 [Install]
@@ -71,7 +115,7 @@ WantedBy=multi-user.target
 4. Move unit into systemd folder
 
 ```
-cp foo.service /etc/systemd/systemcp foo.service /etc/systemd/system
+cp foo.service /etc/systemd/system
 ```
 
 5. Reload daemon
@@ -80,14 +124,8 @@ cp foo.service /etc/systemd/systemcp foo.service /etc/systemd/system
 systemctl daemon-reload
 ```
 
-6. Start unit
+6. Enable start on boot
 
 ```
-systemctl start foo.service
-```
-
-7. Check status unit
-
-```
-systemctl status foo.service
+systemctl enable foo.service
 ```
