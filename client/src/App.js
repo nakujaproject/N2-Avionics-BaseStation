@@ -65,7 +65,7 @@ function App() {
 	};
 
 	const toggleEjection = () => {
-		socket.emit('eject', !ignitionStatus ? 'on' : 'off');
+		socket.emit('eject', !ejectionStatus ? 'on' : 'off');
 		setEjectionStatus(!ejectionStatus);
 	};
 
