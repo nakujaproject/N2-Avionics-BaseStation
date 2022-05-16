@@ -112,20 +112,20 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-4. Move unit into systemd folder
+4. Copy unit into systemd folder
 
 ```
-cp foo.service /etc/systemd/system
+sudo cp foo.service /etc/systemd/system
 ```
 
 5. Reload daemon
 
 ```
-systemctl daemon-reload
+sudo systemctl daemon-reload
 ```
 
 6. Enable start on boot
 
 ```
-systemctl enable foo.service
+sudo systemctl enable foo.service
 ```
