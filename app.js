@@ -9,7 +9,7 @@ const mqtt = require('./config/mqtt');
 // socket.io
 const io = new Server(server, {
 	cors: {
-		origin: process.env.ORIGIN || 'http://localhost:3000',
+		origin: process.env.ORIGIN || '*',
 	},
 });
 
