@@ -1,14 +1,6 @@
 # base-station
 
-## How to run in production environment
-
-In the root directory, run:
-
-```
-npm run prod
-```
-
-## How to run in development environment
+## Necessary steps before running
 
 1. In the client directory, run:
 
@@ -26,7 +18,17 @@ npm install
 
 installs the necessary dependencies for the server app
 
-3. In the root directory, you can run:
+## How to run in production environment
+
+In the root directory, run:
+
+```
+npm run prod
+```
+
+## How to run in development environment
+
+In the root directory, you can run:
 
 ```
 npm run dev
