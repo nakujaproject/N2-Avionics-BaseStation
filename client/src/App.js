@@ -5,7 +5,7 @@ import './App.css';
 import LineChart from './components/LineChart';
 import useSessionStorage from './hooks/useSessionStorage';
 
-const socket = io(process.env.REACT_APP_SERVER_URL || 'http://localhost:5000/');
+const socket = io(process.env.REACT_APP_SERVER_URL || 'http://localhost:5000');
 
 function App() {
 	const [y, setY] = useSessionStorage('x', []);
@@ -23,7 +23,7 @@ function App() {
 	useEffect(() => {
 		// client-side
 		socket.on('connect', () => {
-			console.log('ws connected to server');
+			console.log(`${socket.id} connected to server`);
 		});
 
 		socket.on('altitude', (altitude) => {

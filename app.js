@@ -19,8 +19,12 @@ app.get('/', (req, res) => {
 });
 // handle  websocket connections
 io.on('connection', (socket) => {
-	console.log('ws: a user connected');
+	console.log(`user connected: ${socket.id}`);
 	mqtt(socket);
+
+	socket.on('disconnect', () => {
+		console.log(`user has disconnected: ${socket.id}`);
+	});
 });
 
 const PORT = process.env.PORT || 5000;
