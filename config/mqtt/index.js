@@ -48,30 +48,11 @@ module.exports = (socket) => {
 	client.on('message', (topic, message, packet) => {
 		//console.log(packet, packet.payload.toString());
 
-		switch (topic) {
-			case 'esp32/altitude':
-				console.log('altitude', JSON.parse(message));
-				socket.emit('altitude', JSON.parse(message));
-				break;
-			case 'esp32/state':
-				console.log('state', JSON.parse(message));
-				socket.emit('state', JSON.parse(message));
-				break;
-			case 'esp32/timestamp':
-				console.log('timestamp', JSON.parse(message));
-				socket.emit('timestamp', JSON.parse(message));
-				break;
-			case 'esp32/longitude':
-				console.log('longitude', JSON.parse(message));
-				socket.emit('longitude', JSON.parse(message));
-				break;
-			case 'esp32/latitude':
-				console.log('latitude', JSON.parse(message));
-				socket.emit('latitude', JSON.parse(message));
-				break;
+		if (topic === 'esp32/message') {
 
-			default:
-				break;
+			console.log('message', JSON.parse(message));
+			socket.emit('message', JSON.parse(message));
 		}
+
 	});
 };

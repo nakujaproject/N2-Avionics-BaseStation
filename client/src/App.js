@@ -25,24 +25,18 @@ function App() {
 		socket.on('connect', () => {
 			console.log(`${socket.id} connected to server`);
 		});
+		socket.on('message', (message) => {
 
-		socket.on('altitude', (altitude) => {
-			setAltitude(altitude);
+			const { altitude, longitude, latitude, state, timestamp } = message;
+			console.log('message',message);
 			setX([...x, altitude]);
-		});
-		socket.on('state', (state) => {
-			setState(state);
-		});
-		socket.on('timestamp', (timestamp) => {
-			setTimestamp(timestamp);
 			setY([...y, timestamp]);
-		});
-		socket.on('longitude', (longitude) => {
 			setLongitude(longitude);
-		});
-		socket.on('latitude', (latitude) => {
 			setLatitude(latitude);
-		});
+			setState(state);
+			setTimestamp(timestamp);
+		})
+		
 
 		socket.on('disconnect', () => {
 			console.log('ws disconnected from server');
