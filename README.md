@@ -1,5 +1,4 @@
 # base-station
-
 ## Necessary steps before running
 
 1. In the client directory, run:
@@ -154,3 +153,5 @@ sudo systemctl daemon-reload
 ```
 sudo systemctl enable bs.service
 ```
+##system architecture
+![architecture](./client/public/architecture.png)
