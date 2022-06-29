@@ -6,9 +6,9 @@
 		"start": "node app.js",
 		"dev": "concurrently \"nodemon app.js\" \"npm run dev-client\"",
 		"prod": "concurrently \"npm start \" \"npm run build-client && npm run serve-client\"",
-		"serve-client": "npm run serve --prefix client",
-		"dev-client": "npm start --prefix client",
-		"build-client": "npm run build --prefix client"
+		"serve-client": "npm run serve --prefix ../client",
+		"dev-client": "npm start --prefix ../client",
+		"build-client": "npm run build --prefix ../client"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
