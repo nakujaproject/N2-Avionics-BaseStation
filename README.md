@@ -153,5 +153,5 @@ sudo systemctl daemon-reload
 ```
 sudo systemctl enable bs.service
 ```
-##system architecture
+## system architecture
 ![architecture](./client/public/architecture.png)
