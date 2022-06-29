@@ -10,7 +10,7 @@ npm install
 
 installs the necessary dependencies for the client app
 
-2. In the root directory, run:
+2. In the node -server directory, run:
 
 ```
 npm install
@@ -20,7 +20,7 @@ installs the necessary dependencies for the server app
 
 ## How to run in production environment
 
-In the root directory, run:
+In the node-server directory, run:
 
 ```
 npm run prod
@@ -28,7 +28,7 @@ npm run prod
 
 ## How to run in development environment
 
-In the root directory, you can run:
+In the node-server directory, you can run:
 
 ```
 npm run dev
@@ -53,7 +53,7 @@ REACT_APP_SERVER_URL=ws://<server hostname or ip address>:<server port> or http:
 
 ## Running with custom environment variables on server
 
-1. In the root directory create a .env file
+1. In the node-server directory create a .env file
 
 ```
 touch .env
