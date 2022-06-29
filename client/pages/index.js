@@ -142,16 +142,6 @@ export async function getServerSideProps(context) {
 			}
 			console.log(granted, 'granted');
 		});
-		client.publish(
-			'esp32/ejection',
-			!ejectionStatus ? 'on' : 'off',
-			{ qos: 1, retain: false },
-			(PacketCallback, err) => {
-				if (err) {
-					console.log(err, 'MQTT publish packet');
-				}
-			}
-		);
 	});
 
 	client.on('message', (topic, message, packet) => {
