@@ -1,0 +1,40 @@
+version: '3'
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.14
+    ports:
+      - "1883:1883"   
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf 
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log  
+  influxdb:
+    image: influxdb:2.3-alpine
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - influxdb2:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    env_file:
+      # Use these same configurations parameters in your telegraf configuration, telegraf.conf.
+      - ./influxdb.env
+    #entrypoint: ["./entrypoint.sh"]
+    #restart: on-failure:10
+    #depends_on:
+    #  - influxdb
+  telegraf:
+    image: telegraf:1.20-alpine
+    links:
+      - influxdb
+    volumes:
+      # Mount for telegraf config
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf
+    env_file: 
+      - ./influxdb.env
+    depends_on:
+      - mosquitto
+      - influxdb_cli
+volumes:
+  influxdb2:
+  mosquitto-data:
+  mosquitto-log:
