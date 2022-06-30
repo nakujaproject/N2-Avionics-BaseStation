@@ -1,10 +1,13 @@
 # base-station
+## system architecture
+![architecture](./client/public/architecture.png)
 
 ## Necessary steps before running
 
 1. In the client directory, run:
 
 ```
+npm install
 npm install
 ```
 
@@ -13,7 +16,6 @@ installs the necessary dependencies for the client app
 2. In the node -server directory, run:
 
 ```
-npm install
 ```
 
 installs the necessary dependencies for the server app
