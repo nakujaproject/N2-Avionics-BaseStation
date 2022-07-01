@@ -2,12 +2,51 @@
 ## system architecture
 ![architecture](./client/public/architecture.png)
 
-## Necessary steps before running
+## Steps to run mosquitto influx and telegraf
+
+1. Install docker desktop
+
+[Docker desktop download instructions found here](https://www.docker.com/get-started/)
+
+2. in the root directory create a file named influxdb.env
+
+```
+touch influxdb.env
+```
+3. In influxdb.env set the following environment variables
+
+```
+DOCKER_INFLUXDB_INIT_MODE=setup
+DOCKER_INFLUXDB_INIT_USERNAME=avionics
+DOCKER_INFLUXDB_INIT_PASSWORD=987654321
+DOCKER_INFLUXDB_INIT_ORG=nakuja
+DOCKER_INFLUXDB_INIT_BUCKET=telemetry
+DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mysupersecrettoken
+```
+4. In the root directory run:
+
+```
+docker compose up -d
+```
+
+5. influxb dashboard is now availabe at localhost:8086
+
+```
+http://localhost:8086
+```
+6. Sign in with username and password set in influxdb.env
+
+```
+username=avionics
+password=987654321
+```
+7. Everything is ready for use
+
+## Steps to run web app
 
 1. In the client directory, run:
 
 ```
-npm install
 npm install
 ```
 
