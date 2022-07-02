@@ -1,68 +1,70 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 
-import { io } from 'socket.io-client';
-import { useEffect, useState } from 'react';
+// import { io } from 'socket.io-client';
+//import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import LineChart from '../components/LineChart';
+//import LineChart from '../components/LineChart';
+import { GChart } from '../components/GChart';
 import useSessionStorage from '../hooks/useSessionStorage';
 
-const socket = io(
-	process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000'
-);
+// const socket = io(
+// 	process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000'
+// );
 
 function Home({ o }) {
 	console.log(o);
 	const [y, setY] = useSessionStorage('x', []);
 	const [x, setX] = useSessionStorage('y', []);
 
-	const [timestamp, setTimestamp] = useSessionStorage('timestamp', 0);
-	const [state, setState] = useSessionStorage('state', 0);
-	const [altitude, setAltitude] = useSessionStorage('altitude', 0);
-	const [latitude, setLatitude] = useSessionStorage('latitude', 0);
-	const [longitude, setLongitude] = useSessionStorage('longitude', 0);
+	// const [timestamp, setTimestamp] = useSessionStorage('timestamp', 0);
+	// const [state, setState] = useSessionStorage('state', 0);
+	// const [altitude, setAltitude] = useSessionStorage('altitude', 0);
+	// const [latitude, setLatitude] = useSessionStorage('latitude', 0);
+	// const [longitude, setLongitude] = useSessionStorage('longitude', 0);
 
 	const [ignitionStatus, setIgnitionStatus] = useState(false);
 	const [ejectionStatus, setEjectionStatus] = useState(false);
 
-	useEffect(() => {
-		// client-side
-		socket.on('connect', () => {
-			console.log(`${socket.id} connected to server`);
-		});
-		socket.on('message', (message) => {
-			const { altitude, longitude, latitude, state, timestamp } = message;
-			console.log('message', message);
-			setX([...x, altitude]);
-			setY([...y, timestamp]);
-			setLongitude(longitude);
-			setLatitude(latitude);
-			setState(state);
-			setTimestamp(timestamp);
-		});
+	// useEffect(() => {
+	// 	// client-side
+	// 	socket.on('connect', () => {
+	// 		console.log(`${socket.id} connected to server`);
+	// 	});
+	// 	socket.on('message', (message) => {
+	// 		const { altitude, longitude, latitude, state, timestamp } = message;
+	// 		console.log('message', message);
+	// 		setX([...x, altitude]);
+	// 		setY([...y, timestamp]);
+	// 		setLongitude(longitude);
+	// 		setLatitude(latitude);
+	// 		setState(state);
+	// 		setTimestamp(timestamp);
+	// 	});
 
-		socket.on('disconnect', () => {
-			console.log('ws disconnected from server');
-		});
-	}, [
-		x,
-		y,
-		setAltitude,
-		setLatitude,
-		setLongitude,
-		setState,
-		setTimestamp,
-		setX,
-		setY,
-	]);
+	// 	socket.on('disconnect', () => {
+	// 		console.log('ws disconnected from server');
+	// 	});
+	// }, [
+	// 	x,
+	// 	y,
+	// 	setAltitude,
+	// 	setLatitude,
+	// 	setLongitude,
+	// 	setState,
+	// 	setTimestamp,
+	// 	setX,
+	// 	setY,
+	// ]);
 
 	const toggleIgnition = () => {
-		socket.emit('ignite', !ignitionStatus ? 'on' : 'off');
+		//	socket.emit('ignite', !ignitionStatus ? 'on' : 'off');
 		setIgnitionStatus(!ignitionStatus);
 	};
 
 	const toggleEjection = () => {
-		socket.emit('eject', !ejectionStatus ? 'on' : 'off');
+		//	socket.emit('eject', !ejectionStatus ? 'on' : 'off');
 		setEjectionStatus(!ejectionStatus);
 	};
 
@@ -108,16 +110,29 @@ function Home({ o }) {
 					}}
 				>
 					<span>Timestamp: {o._value}</span>
-					<span>State: {state}</span>
-					<span>Altitude: {altitude} </span>
-					<span>Longitude: {longitude}</span>
-					<span>Latitude: {latitude}</span>
+					<span>State: </span>
+					<span>Altitude: </span>
+					<span>Longitude: </span>
+					<span>Latitude: </span>
 				</div>
 
 				<div
 					style={{ width: '1200px', height: '675px', margin: 'auto' }}
 				>
-					<LineChart x={x} y={y} />
+					<GChart
+						data={[
+							['x', 'altitude'],
+							[0, 0],
+							[1, 10],
+							[2, 23],
+							[3, 17],
+							[4, 18],
+							[5, 9],
+							[6, 11],
+							[7, 27],
+						]}
+					/>
+					{/* <LineChart x={x} y={y} /> */}
 				</div>
 			</main>
 		</div>

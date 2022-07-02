@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "node app.js",
+		"server":"nodemon app.js",
 		"dev": "concurrently \"nodemon app.js\" \"npm run dev-client\"",
 		"prod": "concurrently \"npm start \" \"npm run prod-client\"",
 		"dev-client": "npm run dev --prefix ../client",
