@@ -1,156 +1,62 @@
-# base-station
+# Python Flask API For N2 Avionics Base Station
 
-## Necessary steps before running
 
-1. In the client directory, run:
+You require python 3 to use flask checkout its documentation at https://docs.python.org/3/
+### Installing Flask
+To install flask, run the command below on the command line in the necessary virtual environment for your application.
+```
+pip install flask
 
 ```
-npm install
-```
-
-installs the necessary dependencies for the client app
-
-2. In the node -server directory, run:
+### Creating the application
+Your programming environment set up, You can start using Flask.
+A simple flask application can be created in a python file as shown below
 
 ```
-npm install
-```
+from flask import Flask
 
-installs the necessary dependencies for the server app
+app=Flask(__name__)
 
-## How to run in production environment
-
-In the node-server directory, run:
-
-```
-npm run prod
-```
-
-## How to run in development environment
-
-In the node-server directory, you can run:
+@app.route('/')
+def hello():
+    return "Hello world"
 
 ```
-npm run dev
+### Running the flask app
+Save the created file and close.
+To run the web application, on your commandline, tell flask where to find the application via setting FLASK_APP environment variable as shown
 ```
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-## Running with custom environment variables on client
-
-1. In the client directory create a .env.local file
+export FLASK_APP=my_flask_file #use 'set' instead of export for linux
 
 ```
-touch .env.local
-```
-
-2. Add the following values to the .env.local file
+running it in development mode
 
 ```
-REACT_APP_SERVER_URL=ws://<server hostname or ip address>:<server port> or http://<server hostname or ip address>:<server port>
-```
-
-## Running with custom environment variables on server
-
-1. In the node-server directory create a .env file
+export FLASK_ENV=development #use 'set' instead of export for linux
 
 ```
-touch .env
-```
 
-2. Add the following values to the .env file
+running the application, use the flask run commmand as shown
 
 ```
-BROKER_URL=mqtt://<broker hostname or ip address>:<broker port>
-PORT=<server port>
-ORIGIN=http://<client hostname or ip address>:<client port>
-```
-
-## Running with systemd
-
-Suppose you are in the app directory `/home/$USER/foo`
-
-1. Create file, let's call it foo.service
+flask run
 
 ```
-touch foo.service
-```
 
-2. In the file add
+Output will be something like this
 
 ```
-[Unit]
-Description=Foo application
-
-[Service]
-User=<USER>
-WorkingDirectory=/home/<USER>/foo
-ExecStart=/usr/bin/npm run prod
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
+Output
+ * Serving Flask app "hello" (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 813-894-335
+ 
 ```
 
-4. Copy unit into systemd folder
+There you go! You have created a Flask application.
 
-```
-sudo cp foo.service /etc/systemd/system
-```
-
-5. Reload daemon
-
-```
-sudo systemctl daemon-reload
-```
-
-6. Enable start on boot
-
-```
-sudo systemctl enable foo.service
-```
-
-## systemd on raspberrypi example
-
-Suppose you are in the app directory `/home/pi/Desktop/base-station`
-
-1. Create file, let's call it bs.service
-
-```
-touch bs.service
-```
-
-2. In the file add
-
-```
-[Unit]
-Description=Nakuja N2 base station software
-
-[Service]
-User=pi
-WorkingDirectory=/home/pi/Desktop/base-station
-ExecStart=/usr/bin/npm run prod
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-```
-
-4. Copy unit into systemd folder
-
-```
-sudo cp bs.service /etc/systemd/system
-```
-
-5. Reload daemon
-
-```
-sudo systemctl daemon-reload
-```
-
-6. Enable start on boot
-
-```
-sudo systemctl enable bs.service
-```
+Flask is a microframework for building extensible web applications. To learn more about flask you can check its documentation at https://flask.palletsprojects.com/en/2.1.x/
