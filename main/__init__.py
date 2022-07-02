@@ -12,8 +12,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import config
 import logging
-from utils.responses import response_with
-import utils.responses as resp
+from main.utils.responses import response_with
+import main.utils.responses as resp
 
 
 db=SQLAlchemy()
