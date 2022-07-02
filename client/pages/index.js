@@ -11,7 +11,8 @@ const socket = io(
 	process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000'
 );
 
-function Home() {
+function Home({ o }) {
+	console.log(o);
 	const [y, setY] = useSessionStorage('x', []);
 	const [x, setX] = useSessionStorage('y', []);
 
@@ -106,7 +107,7 @@ function Home() {
 						margin: 'auto',
 					}}
 				>
-					<span>Timestamp: {timestamp}</span>
+					<span>Timestamp: {o._value}</span>
 					<span>State: {state}</span>
 					<span>Altitude: {altitude} </span>
 					<span>Longitude: {longitude}</span>
@@ -124,3 +125,41 @@ function Home() {
 }
 
 export default Home;
+
+export async function getServerSideProps() {
+	// connect to influx
+
+	const { InfluxDB } = require('@influxdata/influxdb-client');
+
+	const token = 'mytoken';
+	const org = 'robotus';
+	const bucket = 'telemetry';
+
+	const client = new InfluxDB({ url: 'http://localhost:8086', token: token });
+
+	const queryApi = client.getQueryApi(org);
+
+	const query = `from(bucket: "telemetry") |> range(start: -1d)`;
+	queryApi.queryRows(query, {
+		next(row, tableMeta) {
+			const o = tableMeta.toObject(row);
+			console.log(
+				`${o._time} ${o._measurement}: ${o._field}=${o._value}`
+			);
+		},
+		error(error) {
+			console.error(error);
+			console.log('QUERY Finished ERROR');
+		},
+		complete() {
+			console.log('QUERY Finished SUCCESS');
+		},
+	});
+
+	// Pass data to the page via props
+	return {
+		props: {
+			o: {},
+		},
+	};
+}
