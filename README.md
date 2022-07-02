@@ -60,3 +60,45 @@ Output
 There you go! You have created a Flask application.
 
 Flask is a microframework for building extensible web applications. To learn more about flask you can check its documentation at https://flask.palletsprojects.com/en/2.1.x/
+
+# PROJECT STRUCTURE
+
+```
+main/__-data_processing/#this directory contains all received data related tasks
+       |
+       |
+       -models/#this directory contains database models
+       |
+       |
+       -routes/__-#cointains routes to api endpoints
+       |     |
+       |     -auth/__#this directory contains api authentication endpoints
+       |     |    |
+       |     |    -auth_.py #this file contains api authentication end points
+       |     |    -authforms.py #this file contains form for endpoints
+       |     |
+       |     -views/__#this directory contains api enpoints to serve data
+       |         |
+       |         -views_.py #this file cointains api data endpoints
+       |         -views_forms_.py #form for views endpoints
+       |
+       -utils/__#this directry contains important utilities for the application
+       |     |
+       |     |
+       |     -email/__#this folder contains email related functionalities
+       |     |
+       |     |
+       |     -errors/__#this folder contains not global error handling
+       |     |
+       |     |
+       |     -responses.py#handles api responses
+       |
+       |
+       -tests/__#this folder contains tests related tasks
+       |
+       |
+       |
+       -avi_app.py#contains the script thats starts the application
+       -config.py#contains the application configuration
+       -requirements.txt#contains requirements to run the application
+```
