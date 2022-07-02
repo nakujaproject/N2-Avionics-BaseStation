@@ -11,8 +11,9 @@ sys.path.insert(0,parentdir)#resolving package import path list
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import config
-
-
+import logging
+from utils.responses import response_with
+import utils.responses as resp
 
 
 db=SQLAlchemy()
@@ -30,6 +31,26 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     
+    #SETTING GLOBAL HTTP CONFIGURATIONS
+    @app.after_request
+    def add_header(response):
+        return response
+    
+    @app.errorhandler(400)
+    def bad_request(e):
+        logging.error(e)
+        return response_with(resp.BAD_REQUEST_400)
+    
+    @app.errorhandler(500)
+    def server_error(e):
+        logging.error(e)
+        return response_with(resp.SERVER_ERROR_500)
+    
+    @app.errorhandler(404)
+    def not_found(e):
+        logging.error(e)
+        return response_with(resp.SERVER_ERROR_404)
+    
     #Initializing extensions
     db.init_app(app)
     
@@ -39,4 +60,5 @@ def create_app(config_name):
     app.register_blueprint(views)
     app.register_blueprint(auth)
     
+    #LOGGING CONFIGURATION
     return app
