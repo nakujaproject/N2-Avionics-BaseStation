@@ -24,7 +24,7 @@ export default async function handle(req, res) {
 		},
 		error(error) {
 			console.error(error);
-			console.log('QUERY Finished ERROR');
+			res.status(502).json(error.message);
 		},
 		complete() {
 			console.log('QUERY Finished SUCCESS');

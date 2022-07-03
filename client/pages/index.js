@@ -7,16 +7,33 @@ import { GChart } from '../components/GChart';
 //import useSessionStorage from '../hooks/useSessionStorage';
 
 function Home() {
-	const [plot, setPlot] = useState([]);
+	const [plot, setPlot] = useState([[0, 0]]);
 	const [ignitionStatus, setIgnitionStatus] = useState(false);
 	const [ejectionStatus, setEjectionStatus] = useState(false);
 
 	useEffect(() => {
 		const timer = setInterval(() => {
 			fetch('/api/altitude')
-				.then((res) => res.json())
+				.then(async (res) => {
+					if (res.status !== 200) {
+						const isJson = res.headers
+							.get('content-type')
+							?.includes('application/json');
+						if (!isJson) {
+							return Promise.reject(res);
+						}
+						const data = await res.json();
+						const error = data ?? res.statusText;
+						return Promise.reject(error);
+					}
+					res.json();
+				})
 				.then((data) => {
 					setPlot(data);
+				})
+				.catch((e) => {
+					clearInterval(timer);
+					console.error(e);
 				});
 		}, 300);
 
