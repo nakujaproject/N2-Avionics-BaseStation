@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css';
 import { useState, useEffect } from 'react';
 
 import { GChart } from '../components/GChart';
+import LineChart from '../components/LineChart';
 //import useSessionStorage from '../hooks/useSessionStorage';
 
 function Home() {
@@ -26,14 +27,12 @@ function Home() {
 						const error = data ?? res.statusText;
 						return Promise.reject(error);
 					}
-					res.json();
-				})
-				.then((data) => {
-					setPlot(data);
+					let data = await res.json();
+					data.length > 0 && setPlot(data);
 				})
 				.catch((e) => {
-					clearInterval(timer);
 					console.error(e);
+					clearInterval(timer);
 				});
 		}, 300);
 
@@ -41,6 +40,8 @@ function Home() {
 			clearInterval(timer);
 		};
 	}, []);
+
+	let datapoints = [['x', 'altitude'], ...plot];
 
 	const toggleIgnition = () => {
 		//	socket.emit('ignite', !ignitionStatus ? 'on' : 'off');
@@ -103,7 +104,8 @@ function Home() {
 				<div
 					style={{ width: '1200px', height: '675px', margin: 'auto' }}
 				>
-					<GChart data={[['x', 'altitude'], ...plot]} />
+					<GChart data={datapoints} />
+					{/* <LineChart /> */}
 				</div>
 			</main>
 		</div>

@@ -7,11 +7,11 @@ export default async function handle(req, res) {
 
 	const query = `
     from(bucket: "${bucket}") 
-      |> range(start: -1d)
+      |> range(start: -2d)
       |> filter(fn: (r) => r["_measurement"] == "mqtt_consumer")
       |> filter(fn: (r) => r["topic"] == "esp32/message")
       |> filter(fn: (r) => r["_field"] == "altitude")
-      |> tail(n: 100)
+      |> tail(n: 200)
     `;
 	let arr = [];
 	queryApi.queryRows(query, {
