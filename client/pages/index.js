@@ -3,54 +3,49 @@ import styles from '../styles/Home.module.css';
 
 import { useState, useEffect } from 'react';
 
-import { GChart } from '../components/GChart';
-import LineChart from '../components/LineChart';
-//import useSessionStorage from '../hooks/useSessionStorage';
+import Altitude from '../components/charts/Altitude';
+import io from 'socket.io-client';
+
+let socket;
 
 function Home() {
-	const [plot, setPlot] = useState([[0, 0]]);
 	const [ignitionStatus, setIgnitionStatus] = useState(false);
 	const [ejectionStatus, setEjectionStatus] = useState(false);
+	const [ejectionStatus2, setEjectionStatus2] = useState(false);
 
 	useEffect(() => {
-		const timer = setInterval(() => {
-			fetch('/api/altitude')
-				.then(async (res) => {
-					if (res.status !== 200) {
-						const isJson = res.headers
-							.get('content-type')
-							?.includes('application/json');
-						if (!isJson) {
-							return Promise.reject(res);
-						}
-						const data = await res.json();
-						const error = data ?? res.statusText;
-						return Promise.reject(error);
-					}
-					let data = await res.json();
-					data.length > 0 && setPlot(data);
-				})
-				.catch((e) => {
-					console.error(e);
-					clearInterval(timer);
-				});
-		}, 300);
+		const socketInitializer = async () => {
+			await fetch('/api/socket');
+			socket = io();
 
-		return () => {
-			clearInterval(timer);
+			socket.on('connect', () => {
+				console.log(`${socket.id} connected to server`);
+			});
+
+			socket.on('message', (message) => {
+				console.log('message', message);
+			});
+
+			socket.on('disconnect', () => {
+				console.log('ws disconnected from server');
+			});
 		};
+		socketInitializer();
 	}, []);
 
-	let datapoints = [['x', 'altitude'], ...plot];
-
 	const toggleIgnition = () => {
-		//	socket.emit('ignite', !ignitionStatus ? 'on' : 'off');
+		socket.emit('ignite', !ignitionStatus ? 'on' : 'off');
 		setIgnitionStatus(!ignitionStatus);
 	};
 
 	const toggleEjection = () => {
-		//	socket.emit('eject', !ejectionStatus ? 'on' : 'off');
+		socket.emit('eject', !ejectionStatus ? 'on' : 'off');
 		setEjectionStatus(!ejectionStatus);
+	};
+
+	const toggleEjection2 = () => {
+		socket.emit('eject2', !ejectionStatus2 ? 'on' : 'off');
+		setEjectionStatus2(!ejectionStatus2);
 	};
 
 	return (
@@ -83,6 +78,9 @@ function Home() {
 					<button onClick={toggleEjection}>
 						{ejectionStatus ? 'Stop Ejection' : 'Start Ejection'}
 					</button>
+					<button onClick={toggleEjection2}>
+						{ejectionStatus2 ? 'Stop Ejection2' : 'Start Ejection2'}
+					</button>
 				</div>
 
 				<div
@@ -104,8 +102,7 @@ function Home() {
 				<div
 					style={{ width: '1200px', height: '675px', margin: 'auto' }}
 				>
-					<GChart data={datapoints} />
-					{/* <LineChart /> */}
+					<Altitude />
 				</div>
 			</main>
 		</div>
