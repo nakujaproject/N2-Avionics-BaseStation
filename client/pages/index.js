@@ -1,59 +1,37 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 
-import { io } from 'socket.io-client';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import LineChart from '../components/LineChart';
-import useSessionStorage from '../hooks/useSessionStorage';
+import Altitude from '../components/charts/Altitude';
+import io from 'socket.io-client';
 
-const socket = io(
-	process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000'
-);
+let socket;
 
 function Home() {
-	const [y, setY] = useSessionStorage('x', []);
-	const [x, setX] = useSessionStorage('y', []);
-
-	const [timestamp, setTimestamp] = useSessionStorage('timestamp', 0);
-	const [state, setState] = useSessionStorage('state', 0);
-	const [altitude, setAltitude] = useSessionStorage('altitude', 0);
-	const [latitude, setLatitude] = useSessionStorage('latitude', 0);
-	const [longitude, setLongitude] = useSessionStorage('longitude', 0);
-
 	const [ignitionStatus, setIgnitionStatus] = useState(false);
 	const [ejectionStatus, setEjectionStatus] = useState(false);
+	const [ejectionStatus2, setEjectionStatus2] = useState(false);
 
 	useEffect(() => {
-		// client-side
-		socket.on('connect', () => {
-			console.log(`${socket.id} connected to server`);
-		});
-		socket.on('message', (message) => {
-			const { altitude, longitude, latitude, state, timestamp } = message;
-			console.log('message', message);
-			setX([...x, altitude]);
-			setY([...y, timestamp]);
-			setLongitude(longitude);
-			setLatitude(latitude);
-			setState(state);
-			setTimestamp(timestamp);
-		});
+		const socketInitializer = async () => {
+			await fetch('/api/socket');
+			socket = io();
 
-		socket.on('disconnect', () => {
-			console.log('ws disconnected from server');
-		});
-	}, [
-		x,
-		y,
-		setAltitude,
-		setLatitude,
-		setLongitude,
-		setState,
-		setTimestamp,
-		setX,
-		setY,
-	]);
+			socket.on('connect', () => {
+				console.log(`${socket.id} connected to server`);
+			});
+
+			socket.on('message', (message) => {
+				console.log('message', message);
+			});
+
+			socket.on('disconnect', () => {
+				console.log('ws disconnected from server');
+			});
+		};
+		socketInitializer();
+	}, []);
 
 	const toggleIgnition = () => {
 		socket.emit('ignite', !ignitionStatus ? 'on' : 'off');
@@ -63,6 +41,11 @@ function Home() {
 	const toggleEjection = () => {
 		socket.emit('eject', !ejectionStatus ? 'on' : 'off');
 		setEjectionStatus(!ejectionStatus);
+	};
+
+	const toggleEjection2 = () => {
+		socket.emit('eject2', !ejectionStatus2 ? 'on' : 'off');
+		setEjectionStatus2(!ejectionStatus2);
 	};
 
 	return (
@@ -95,6 +78,9 @@ function Home() {
 					<button onClick={toggleEjection}>
 						{ejectionStatus ? 'Stop Ejection' : 'Start Ejection'}
 					</button>
+					<button onClick={toggleEjection2}>
+						{ejectionStatus2 ? 'Stop Ejection2' : 'Start Ejection2'}
+					</button>
 				</div>
 
 				<div
@@ -106,17 +92,17 @@ function Home() {
 						margin: 'auto',
 					}}
 				>
-					<span>Timestamp: {timestamp}</span>
-					<span>State: {state}</span>
-					<span>Altitude: {altitude} </span>
-					<span>Longitude: {longitude}</span>
-					<span>Latitude: {latitude}</span>
+					<span>Timestamp: </span>
+					<span>State: </span>
+					<span>Altitude: </span>
+					<span>Longitude: </span>
+					<span>Latitude: </span>
 				</div>
 
 				<div
 					style={{ width: '1200px', height: '675px', margin: 'auto' }}
 				>
-					<LineChart x={x} y={y} />
+					<Altitude />
 				</div>
 			</main>
 		</div>

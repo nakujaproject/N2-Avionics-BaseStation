@@ -1,4 +1,7 @@
 import { Line } from 'react-chartjs-2';
+import 'chartjs-adapter-luxon';
+import StreamingPlugin from 'chartjs-plugin-streaming';
+
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -17,24 +20,38 @@ ChartJS.register(
 	LineElement,
 	Title,
 	Tooltip,
-	Legend
+	Legend,
+
+	StreamingPlugin
 );
 
-function LineChart({ x = [], y = [] }) {
+function LineChart({ label, onRefresh }) {
 	const data = {
-		labels: y,
 		datasets: [
 			{
-				label: 'altitude',
-				backgroundColor: 'rgb(255, 99, 132)',
+				label: label,
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
 				borderColor: 'rgb(255, 99, 132)',
-				data: x,
+				data: [],
 			},
 		],
 	};
 
 	const options = {
-		responsive: true,
+		scales: {
+			x: {
+				type: 'realtime',
+				realtime: {
+					delay: 2000,
+					onRefresh: onRefresh,
+					//pause: false,
+					// ttl: 60000,
+					// duration: 20000,
+					// refresh: 100,
+					// frameRate: 30,
+				},
+			},
+		},
 		plugins: {
 			legend: {
 				position: 'top',

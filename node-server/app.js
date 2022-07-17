@@ -18,14 +18,15 @@ app.get('/', (req, res) => {
 	res.send('welcome to  base station');
 });
 // handle  websocket connections
-io.on('connection', (socket) => {
-	console.log(`user connected: ${socket.id}`);
-	mqtt(socket);
+// io.on('connection', (socket) => {
+// 	console.log(`user connected: ${socket.id}`);
 
-	socket.on('disconnect', () => {
-		console.log(`user has disconnected: ${socket.id}`);
-	});
-});
+// 	socket.on('disconnect', () => {
+// 		console.log(`user has disconnected: ${socket.id}`);
+// 	});
+// });
+
+mqtt();
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
