@@ -1,5 +1,15 @@
 version: '3'
 services:
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_MQTT_URI: "mqtt://mosquitto:1883"
+    restart: always
+    ports:
+      - 3000:3000
   mosquitto:
     image: eclipse-mosquitto:2.0.14
     ports:
