@@ -19,14 +19,13 @@ COPY components ./components
 COPY config ./config
 COPY next.config.js .
 COPY .eslintrc.json ./.eslintrc.json
+COPY server.js ./server.js
 
 
 # Environment variables must be present at build time
 # https://github.com/vercel/next.js/discussions/14030
-# ARG ENV_VARIABLE
-# ENV ENV_VARIABLE=${ENV_VARIABLE}
-ARG NEXT_PUBLIC_MQTT_URI
-ENV NEXT_PUBLIC_MQTT_URI=${NEXT_PUBLIC_MQTT_URI}
+ARG MQTT_URI
+ENV MQTT_URI=${MQTT_URI}
 
 # Uncomment the following line to disable telemetry at build time
 # ENV NEXT_TELEMETRY_DISABLED 1
@@ -46,16 +45,21 @@ COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/config ./config
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/server.js ./server.js
 
 # Environment variables must be redefined at run time
-# ARG ENV_VARIABLE
-# ENV ENV_VARIABLE=${ENV_VARIABLE}
-ARG NEXT_PUBLIC_MQTT_URI
-ENV NEXT_PUBLIC_MQTT_URI=${NEXT_PUBLIC_MQTT_URI}
+ARG MQTT_URI
+ENV MQTT_URI=${MQTT_URI}
+ENV NODE_ENV production
 
 # Uncomment the following line to disable telemetry at run time
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-CMD node server.js
+CMD npm start

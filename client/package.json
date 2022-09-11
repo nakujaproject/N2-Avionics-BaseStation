@@ -3,24 +3,25 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@influxdata/influxdb-client": "^1.27.0",
 		"chart.js": "^3.8.0",
 		"chartjs-adapter-luxon": "^1.1.0",
 		"chartjs-plugin-streaming": "^2.0.0",
+		"date-fns": "^2.29.2",
 		"luxon": "^2.4.0",
 		"mqtt": "^4.3.7",
 		"next": "^12.2.0",
 		"react": "^18.1.0",
 		"react-chartjs-2": "^4.2.0",
 		"react-dom": "^18.1.0",
-		"react-google-charts": "^4.0.0",
-		"socket.io": "^4.5.1",
-		"socket.io-client": "^4.5.1"
+		"react-use-websocket": "^4.2.0",
+		"sockjs": "^0.3.24",
+		"sockjs-client": "^1.6.1",
+		"uuid": "^9.0.0"
 	},
 	"scripts": {
-		"dev": "next dev",
+		"dev": "node server.js",
 		"build": "next build",
-		"start": "next start",
+		"start": "NODE_ENV=production node server.js",
 		"lint": "next lint"
 	},
 	"eslintConfig": {
