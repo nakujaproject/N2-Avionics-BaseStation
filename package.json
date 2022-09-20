@@ -7,6 +7,7 @@
 		"chartjs-adapter-luxon": "^1.1.0",
 		"chartjs-plugin-streaming": "^2.0.0",
 		"date-fns": "^2.29.2",
+		"express": "^4.18.1",
 		"luxon": "^2.4.0",
 		"mqtt": "^4.3.7",
 		"next": "^12.2.0",
@@ -14,9 +15,8 @@
 		"react-chartjs-2": "^4.2.0",
 		"react-dom": "^18.1.0",
 		"react-use-websocket": "^4.2.0",
-		"sockjs": "^0.3.24",
-		"sockjs-client": "^1.6.1",
-		"uuid": "^9.0.0"
+		"uuid": "^9.0.0",
+		"ws": "^8.8.1"
 	},
 	"scripts": {
 		"dev": "node server.js",
@@ -45,5 +45,9 @@
 	"devDependencies": {
 		"eslint": "^8.18.0",
 		"eslint-config-next": "^12.2.0"
+	},
+	"optionalDependencies": {
+		"bufferutil": "^4.0.6",
+		"utf-8-validate": "^5.0.9"
 	}
 }

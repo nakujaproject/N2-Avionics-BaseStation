@@ -3,10 +3,10 @@ services:
   client:
     container_name: client
     build:
-      context: ./client
+      context: ./
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_MQTT_URI: "mqtt://mosquitto:1883"
+        MQTT_URI: "mqtt://mosquitto:1883"
     restart: always
     ports:
       - 3000:3000
@@ -18,6 +18,8 @@ services:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf 
       - mosquitto-data:/mosquitto/data
       - mosquitto-log:/mosquitto/log  
+    restart: always
+
   influxdb:
     image: influxdb:2.3-alpine
     volumes:
@@ -27,11 +29,12 @@ services:
       - "8086:8086"
     env_file:
       # Use these same configurations parameters in your telegraf configuration, telegraf.conf.
-      - ./influxdb.env
+      - ./.env.local
     #entrypoint: ["./entrypoint.sh"]
     #restart: on-failure:10
     #depends_on:
     #  - influxdb
+    restart: always
   telegraf:
     image: telegraf:1.20-alpine
     links:
@@ -40,10 +43,13 @@ services:
       # Mount for telegraf config
       - ./telegraf.conf:/etc/telegraf/telegraf.conf
     env_file: 
-      - ./influxdb.env
+      - ./.env.local
     depends_on:
       - mosquitto
       - influxdb_cli
+      - client
+    restart: always
+  
 volumes:
   influxdb2:
   mosquitto-data:

@@ -1,93 +1,86 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+
 import { format } from 'date-fns';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 
-import { useState, useEffect, useRef } from 'react';
-
-import SockJS from 'sockjs-client';
-
+//components
 import LineChart from '../components/LineChart';
-
-let sock;
+import { useMetrics } from '../hooks/useMetrics';
 
 function Home() {
-	console.log('home');
+	console.log('rendering Home');
 	const altitudeChartRef = useRef();
 
 	const [ignitionStatus, setIgnitionStatus] = useState(false);
 	const [ejectionStatus, setEjectionStatus] = useState(false);
 	const [ejectionStatus2, setEjectionStatus2] = useState(false);
-	const [altitude, setAltitude] = useState(0);
-	const [longitude, setLongitude] = useState(0);
-	const [latitude, setLatitude] = useState(0);
-	const [state, setstate] = useState(0);
-	const [timestamp, setTimestamp] = useState(null);
-	const [readyState, setReadystate] = useState(4);
+
+	const [socketUrl] = useState('ws://localhost:3000');
+
+	const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+		socketUrl,
+		{
+			share: true,
+			//Will attempt to reconnect on all close events, such as server shutting down
+			shouldReconnect: (closeEvent) => true,
+		}
+	);
+
+	const connectionStatus = {
+		[ReadyState.CONNECTING]: 'Connecting',
+		[ReadyState.OPEN]: 'Open',
+		[ReadyState.CLOSING]: 'Closing',
+		[ReadyState.CLOSED]: 'Closed',
+		[ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+	}[readyState];
+
+	const { altitude, timestamp, latitude, longitude, state } =
+		useMetrics(lastJsonMessage);
 
 	useEffect(() => {
-		const socketInitializer = async () => {
-			sock = new SockJS('http://localhost:3000/echo');
-			sock.onopen = function () {
-				console.log('websocket connection opened');
-				setReadystate(1);
-			};
-			setReadystate(sock.readyState);
-			sock.onmessage = function (e) {
-				const data = JSON.parse(e.data);
-				console.log('data', e.data);
-				if (data?.metrics) {
-					const { altitude, longitude, latitude, state, timestamp } =
-						data.metrics[0].fields;
-					const x = data.metrics[0].timestamp;
-					setAltitude(altitude);
-					setLatitude(latitude);
-					setLongitude(longitude);
-					setstate(state);
-					setTimestamp(x);
-					const arr = altitudeChartRef.current?.data.datasets[0].data;
-
-					arr.push({
-						x,
-						y: altitude,
-					});
-					altitudeChartRef.current.update('quiet');
-				}
-			};
-
-			sock.onclose = function () {
-				console.log('websocket connection closed');
-				setReadystate(4);
-			};
+		console.log('ref useEffect');
+		let isCancelled = false;
+		if (!isCancelled) {
+			const arr = altitudeChartRef.current?.data.datasets[0]?.data;
+			arr.push({
+				x: timestamp,
+				y: altitude,
+			});
+			altitudeChartRef.current.update('quiet');
+		}
+		return () => {
+			isCancelled = true;
 		};
-		socketInitializer();
-	}, []);
+	}, [altitude, timestamp]);
 
-	const toggleIgnition = () => {
+	const toggleIgnition = useCallback(() => {
 		const data = {
 			mode: 'ignite',
 			status: !ignitionStatus ? 'on' : 'off',
 		};
-		sock.send(JSON.stringify(data));
+		sendJsonMessage(data);
 		setIgnitionStatus(!ignitionStatus);
-	};
+	});
 
-	const toggleEjection = () => {
+	const toggleEjection = useCallback(() => {
 		const data = {
 			mode: 'eject',
 			status: !ejectionStatus ? 'on' : 'off',
 		};
-		sock.send(JSON.stringify(data));
+		sendJsonMessage(data);
 		setEjectionStatus(!ejectionStatus);
-	};
+	});
 
-	const toggleEjection2 = () => {
+	const toggleEjection2 = useCallback(() => {
 		const data = {
 			mode: 'eject2',
 			status: !ejectionStatus2 ? 'on' : 'off',
 		};
+		sendJsonMessage(data);
 		setEjectionStatus2(!ejectionStatus2);
-		sock.send(JSON.stringify(data));
-	};
+	});
 
 	return (
 		<div className={styles.container}>
@@ -108,35 +101,27 @@ function Home() {
 				>
 					Welcome to Base Station
 				</h1>
-				<span>
-					Websocket readyState:{' '}
-					{readyState === 0
-						? 'CONNECTING'
-						: readyState === 1
-						? 'OPEN'
-						: readyState === 3
-						? 'CLOSING'
-						: 'CLOSED'}
-				</span>
+				<span>The WebSocket is currently {connectionStatus}</span>
+
 				<div
 					style={{
 						padding: '10px',
 					}}
 				>
 					<button
-						disabled={readyState !== 1}
+						disabled={readyState !== ReadyState.OPEN}
 						onClick={toggleIgnition}
 					>
 						{ignitionStatus ? 'Stop Ignition' : 'Start Ignition'}
 					</button>
 					<button
-						disabled={readyState !== 1}
+						disabled={readyState !== ReadyState.OPEN}
 						onClick={toggleEjection}
 					>
 						{ejectionStatus ? 'Stop Ejection' : 'Start Ejection'}
 					</button>
 					<button
-						disabled={readyState !== 1}
+						disabled={readyState !== ReadyState.OPEN}
 						onClick={toggleEjection2}
 					>
 						{ejectionStatus2 ? 'Stop Ejection2' : 'Start Ejection2'}

@@ -2,20 +2,19 @@
 ## system architecture
 ![architecture](./client/public/architecture.png)
 
-## Steps to run mosquitto influx and telegraf
+## Steps to run in docker 
 
-1. Install docker desktop
+1. If you dont have docker installed on your system you can  find the installlation instructions [here](https://www.docker.com/get-started/)
 
-[Docker desktop download instructions found here](https://www.docker.com/get-started/)
-
-2. in the root directory create a file named influxdb.env
+2. in the root directory create a file named .env.local; for example if you are using linux run the following command
 
 ```
-touch influxdb.env
+touch .env.local
 ```
-3. In influxdb.env set the following environment variables
+3. In `.env.local` set the following environment variables MQTT_URI is not required.
 
 ```
+MQTT_URI="mqtt://localhost:1883"
 DOCKER_INFLUXDB_INIT_MODE=setup
 DOCKER_INFLUXDB_INIT_USERNAME=avionics
 DOCKER_INFLUXDB_INIT_PASSWORD=987654321
@@ -23,175 +22,23 @@ DOCKER_INFLUXDB_INIT_ORG=nakuja
 DOCKER_INFLUXDB_INIT_BUCKET=telemetry
 DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mysupersecrettoken
 ```
-4. In the root directory run:
+4. To run the application; In the root directory run the following command:
 
 ```
-docker compose up -d
+sudo docker compose up -d
+```
+5. Confirm that all four containers are running using the following command:
+
+```
+sudo docker ps
 ```
 
-5. influxb dashboard is now availabe at localhost:8086
+6. The web client will be availabe at [http://localhost:3000](http://localhost:3000) and the influxb dashboard is now availabe at [http://localhost:8086](http://localhost:8086)
 
-```
-http://localhost:8086
-```
-6. Sign in with username and password set in influxdb.env
+## Note
+Sign in to the influxdb dashboard with username and password set in .env.local
 
 ```
 username=avionics
 password=987654321
-```
-7. Everything is ready for use
-
-## Steps to run web app
-
-1. In the client directory, run:
-
-```
-npm install
-```
-
-installs the necessary dependencies for the client app
-
-2. In the node -server directory, run:
-
-```
-```
-
-installs the necessary dependencies for the server app
-
-## How to run in production environment
-
-In the node-server directory, run:
-
-```
-npm run prod
-```
-
-## How to run in development environment
-
-In the node-server directory, you can run:
-
-```
-npm run dev
-```
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-## Running with custom environment variables on client
-
-1. In the client directory create a .env.local file
-
-```
-touch .env.local
-```
-
-2. Add the following values to the .env.local file
-
-```
-REACT_APP_SERVER_URL=ws://<server hostname or ip address>:<server port> or http://<server hostname or ip address>:<server port>
-```
-
-## Running with custom environment variables on server
-
-1. In the node-server directory create a .env file
-
-```
-touch .env
-```
-
-2. Add the following values to the .env file
-
-```
-BROKER_URL=mqtt://<broker hostname or ip address>:<broker port>
-PORT=<server port>
-ORIGIN=http://<client hostname or ip address>:<client port>
-```
-
-## Running with systemd
-
-Suppose you are in the app directory `/home/$USER/foo`
-
-1. Create file, let's call it foo.service
-
-```
-touch foo.service
-```
-
-2. In the file add
-
-```
-[Unit]
-Description=Foo application
-
-[Service]
-User=<USER>
-WorkingDirectory=/home/<USER>/foo
-ExecStart=/usr/bin/npm run prod
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-```
-
-4. Copy unit into systemd folder
-
-```
-sudo cp foo.service /etc/systemd/system
-```
-
-5. Reload daemon
-
-```
-sudo systemctl daemon-reload
-```
-
-6. Enable start on boot
-
-```
-sudo systemctl enable foo.service
-```
-
-## systemd on raspberrypi example
-
-Suppose you are in the app directory `/home/pi/Desktop/base-station`
-
-1. Create file, let's call it bs.service
-
-```
-touch bs.service
-```
-
-2. In the file add
-
-```
-[Unit]
-Description=Nakuja N2 base station software
-
-[Service]
-User=pi
-WorkingDirectory=/home/pi/Desktop/base-station
-ExecStart=/usr/bin/npm run prod
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-```
-
-4. Copy unit into systemd folder
-
-```
-sudo cp bs.service /etc/systemd/system
-```
-
-5. Reload daemon
-
-```
-sudo systemctl daemon-reload
-```
-
-6. Enable start on boot
-
-```
-sudo systemctl enable bs.service
 ```

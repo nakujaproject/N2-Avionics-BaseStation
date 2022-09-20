@@ -12,15 +12,7 @@ RUN \
     else echo "package-lock.json not found." && exit 1; \
     fi
 
-COPY pages ./pages
-COPY public ./public
-COPY styles ./styles
-COPY components ./components
-COPY config ./config
-COPY next.config.js .
-COPY .eslintrc.json ./.eslintrc.json
-COPY server.js ./server.js
-
+COPY . ./
 
 # Environment variables must be present at build time
 # https://github.com/vercel/next.js/discussions/14030
@@ -57,7 +49,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/server.js ./server.js
 # Environment variables must be redefined at run time
 ARG MQTT_URI
 ENV MQTT_URI=${MQTT_URI}
-ENV NODE_ENV production
 
 # Uncomment the following line to disable telemetry at run time
 # ENV NEXT_TELEMETRY_DISABLED 1

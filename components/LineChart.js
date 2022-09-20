@@ -42,11 +42,43 @@ const LineChart = forwardRef(({ label }, ref) => {
 			x: {
 				type: 'realtime',
 				realtime: {
-					delay: 2000,
+					// 	delay: 2000,
 					// pause: false,
 					// ttl: 60000,
-					duration: 20000,
+					// duration: 20000,
 					// frameRate: 30,
+				},
+				ticks: {
+					font: {
+						size: 15,
+						weight: 'bolder',
+					},
+					color: '#000',
+				},
+				title: {
+					display: true,
+					text: 'Time',
+					font: {
+						size: 24,
+					},
+					color: '#000',
+				},
+			},
+			y: {
+				ticks: {
+					font: {
+						size: 15,
+						weight: 'bolder',
+					},
+					color: '#000',
+				},
+				title: {
+					display: true,
+					text: 'Altitude (m)',
+					font: {
+						size: 24,
+					},
+					color: '#000',
 				},
 			},
 		},
