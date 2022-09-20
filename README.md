@@ -1,6 +1,6 @@
 # base-station
 ## system architecture
-![architecture](./client/public/architecture.png)
+![architecture](./public/architecture.png)
 
 ## Steps to run in docker 
 
