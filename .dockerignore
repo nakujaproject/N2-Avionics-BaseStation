@@ -14,3 +14,6 @@ telegraf.conf
 .next
 .swc
 docker-compose.yaml
+mosquitto-data
+mosquitto-log 
+influxdb2
