@@ -16,7 +16,7 @@ COPY . ./
 
 # Environment variables must be present at build time
 # https://github.com/vercel/next.js/discussions/14030
-ARG MQTT_URI
+
 ENV MQTT_URI=${MQTT_URI}
 
 # Uncomment the following line to disable telemetry at build time

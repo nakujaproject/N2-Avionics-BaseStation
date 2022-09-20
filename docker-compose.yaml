@@ -1,12 +1,7 @@
 version: '3'
 services:
   client:
-    container_name: client
-    build:
-      context: ./
-      dockerfile: Dockerfile
-      args:
-        MQTT_URI: "mqtt://mosquitto:1883"
+    image: 'ghcr.io/cyator/N2-Avionics-BaseStation:0.1.0-alpha'
     restart: always
     ports:
       - 3000:3000
