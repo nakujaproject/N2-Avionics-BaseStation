@@ -1,7 +1,7 @@
 version: '3'
 services:
   client:
-    image: 'ghcr.io/cyator/n2-avionics-basestation:sha256-e510523ce571dd95a0cf9696cd6d55d48735eb8e17bab59e45d152df9ed43996.sig'
+    image: 'ghcr.io/cyator/n2-avionics-basestation:sha256-68c92a4c643ba945d653c594f9bab277f8c30f6789878a2ce2a34193b040e446.sig'
     restart: always
     ports:
       - 3000:3000
