@@ -22,7 +22,8 @@
 		"dev": "node server.js",
 		"build": "next build",
 		"start": "NODE_ENV=production node server.js",
-		"lint": "next lint"
+		"lint": "next lint",
+		"prepare": "husky install"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -43,11 +44,18 @@
 		]
 	},
 	"devDependencies": {
+		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.18.0",
-		"eslint-config-next": "^12.2.0"
+		"eslint-config-next": "^12.2.0",
+		"husky": "^8.0.0"
 	},
 	"optionalDependencies": {
 		"bufferutil": "^4.0.6",
 		"utf-8-validate": "^5.0.9"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
 	}
 }
