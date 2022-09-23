@@ -65,7 +65,7 @@ jobs:
         env: 
           DOCKER_CLIENT_IMAGE:  ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
         run: | 
-          envsubst < docker-compose.yaml
+            (rm -f docker-compose.yaml && envsubst > docker-compose.yaml) < docker-compose.yaml
 
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
