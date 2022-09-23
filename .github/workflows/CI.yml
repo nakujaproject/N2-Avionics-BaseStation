@@ -7,9 +7,13 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - *.md
 
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - *.md
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -76,5 +80,6 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
-          artifacts: "docker-compose.yaml"
+          artifacts: ${{ steps.tag_version.outputs.new_tag }}/"docker-compose.yaml",${{ steps.tag_version.outputs.new_tag }}/"telegraf.conf",${{ steps.tag_version.outputs.new_tag }}/"mosquitto.conf"
+          generateReleaseNotes: true
 
