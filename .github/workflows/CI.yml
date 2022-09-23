@@ -72,8 +72,15 @@ jobs:
         run: | 
             (rm -f docker-compose.yaml && envsubst > docker-compose.yaml) < docker-compose.yaml
             cat docker-compose.yaml
-            mkdir ${{ steps.tag_version.outputs.new_tag }}
-            cp docker-compose.yaml mosquitto.conf telegraf.conf ${{ steps.tag_version.outputs.new_tag }}/
+            mkdir release
+            cp docker-compose.yaml mosquitto.conf telegraf.conf release/
+      
+      - name: Archive Release
+        uses: thedoctor0/zip-release@main
+        with:
+          type: 'zip'
+          path: './release'
+          filename: 'release.zip'            
 
       - name: Create a GitHub release
         if: github.event_name != 'pull_request'
@@ -81,7 +88,7 @@ jobs:
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+          body: "release.zip"
           artifacts: ${{ steps.tag_version.outputs.new_tag }}
           generateReleaseNotes: true
 
