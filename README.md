@@ -21,27 +21,29 @@ The rocket has on board transmitters using `IEEE 802.11`. Messages are transmitt
 | mqtt_consumer   | Subscribes to messages from broker   |
 
 | Processors      | Function |
-| ----------- | ----------- | 
+| ----------- | ----------- |
 | printer   | prints logs to console|
 
 | Outputs      | Function |
-| ----------- | ----------- | 
+| ----------- | ----------- |
 | Websockets   | Streams data to Nextjs client|
 | influxdb_v2   | Saves data to influxDB|
 
 ### InfluxDB
+
 [Influx DB](https://www.influxdata.com/) is an open-source time series database
+
 # Installation
 
 ## Necessary prerequisites for running
 
 This project depends on `docker` to run `eclipse-mosquitto`, `influxdb2` and `telegraf`
 
-If you are using Windows, please follow [steps for installing Docker Desktop on Windows.](https://docs.docker.com/desktop/install/windows-install/)
+1. If you are using Windows, please follow [steps for installing Docker Desktop on Windows.](https://docs.docker.com/desktop/install/windows-install/)
 
-If you are using macOS, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Mac](https://docs.docker.com/desktop/install/mac-install/)
+2. If you are using macOS, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Mac](https://docs.docker.com/desktop/install/mac-install/)
 
-If you are using Linux, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Linux](https://docs.docker.com/desktop/install/linux-install/)
+3. If you are using Linux, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Linux](https://docs.docker.com/desktop/install/linux-install/)
 
 ## How to run ?
 
@@ -49,7 +51,7 @@ If you are using Linux, please be sure to follow the steps outlined in [Docker D
 
 2. Navigate to path of the downloaded artifact
 3. Extract `release.zip`
-4. Navigate into the release directory
+4. Open the `release` directory in your terminal
 5. Confirm you are in the same directory as the docker-compose.yaml file; Run the following command to start the application in detached shell mode:  
 
     ```bash
@@ -73,12 +75,12 @@ Confirm that all four containers are running using the following command:
 
 The following containers should be running
 
-| Container      | Exposed Port |
+| Container      |  Port |
 | ----------- | ----------- |
-| N2-Avionics-BaseStation   | 3000    |
-| eclipse-mosquitto   | 1883   |
-| Telegraf     | None |
-| influxdb   | 8086   |
+| n2-avionics-basestation   | 3000/tcp    |
+| eclipse-mosquitto   | 1883/tcp   |
+| Telegraf     | 8092/udp, 8125/udp, 8094/tcp |
+| influxdb   | 8086/tcp   |
 
 ## Custom Configuration
 
@@ -86,8 +88,8 @@ This project provides the following `environment variables`
 
 | Variable      | Default |
 | ----------- | ----------- |
-| DOCKER_INFLUXDB_INIT_USERNAME   | avionics    |
-| DOCKER_INFLUXDB_INIT_PASSWORD   | 987654321   |
+| INFLUXDB_USER | nakuja    |
+| INFLUXDB_PASSWORD | 987654321   |
 | DOCKER_CLIENT_IMAGE   | ghcr.io/cyator/n2-avionics-basestation   |
 
 The `default` environment variables can be `overwritten` using an environment file named `.env` placed in the same directory as the `docker-compose.yaml` file.
@@ -103,6 +105,6 @@ For more information checkout the [docs on how to use environment variables with
 3. The default username and password for the influxdb2 dashboard is :
 
 ```text
-username=avionics
+username=nakuja
 password=987654321
 ```
