@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Bump version and push tag
+        if: github.event_name != 'pull_request'
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.0
         with:
@@ -69,6 +70,7 @@ jobs:
             cat docker-compose.yaml
 
       - name: Create a GitHub release
+        if: github.event_name != 'pull_request'
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
