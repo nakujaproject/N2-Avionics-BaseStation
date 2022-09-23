@@ -47,7 +47,8 @@
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.18.0",
 		"eslint-config-next": "^12.2.0",
-		"husky": "^8.0.0"
+		"husky": "^8.0.0",
+		"lint-staged": "^13.0.3"
 	},
 	"optionalDependencies": {
 		"bufferutil": "^4.0.6",
