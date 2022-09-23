@@ -80,6 +80,6 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
-          artifacts: ${{ steps.tag_version.outputs.new_tag }}/"docker-compose.yaml",${{ steps.tag_version.outputs.new_tag }}/"telegraf.conf",${{ steps.tag_version.outputs.new_tag }}/"mosquitto.conf"
+          artifacts: "docker-compose.yaml,telegraf.conf,mosquitto.conf"
           generateReleaseNotes: true
 
