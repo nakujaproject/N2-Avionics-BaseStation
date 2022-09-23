@@ -63,7 +63,7 @@ jobs:
 
       - name: Update "docker-compose.yaml"
         env: 
-          DOCKER_CLIENT_IMAGE:  ${{ steps.meta.outputs.tags }}
+          DOCKER_CLIENT_IMAGE:  ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
         run: | 
           envsubst < docker-compose.yaml
 
