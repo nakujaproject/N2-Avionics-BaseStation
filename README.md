@@ -1,197 +1,110 @@
-# base-station
-## system architecture
-![architecture](./client/public/architecture.png)
+# Overview  [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-## Steps to run mosquitto influx and telegraf
+## How does it work ?
 
-1. Install docker desktop
+![architecture](./public/ground%20station.png)
 
-[Docker desktop download instructions found here](https://www.docker.com/get-started/)
+### Rocket
 
-2. in the root directory create a file named influxdb.env
+The rocket has on board transmitters using `IEEE 802.11`. Messages are transmitted using the [MQTT protocol.](https://mqtt.org/)
 
+### Eclipse-mosquitto
+
+[Eclipse Mosquitto](https://mosquitto.org/) is an open-source message broker. All endpoints send and receive messages through the broker.
+
+### Telegraf
+
+[Telegraf](https://www.influxdata.com/time-series-platform/telegraf/) is open-source data collection agent. Configurations for `inputs`, `processors`, `aggregators` and `outputs` are set in the `telegraf.conf` file.
+
+| Inputs      | Function|
+| ----------- | ----------- |
+| mqtt_consumer   | Subscribes to messages from broker   |
+
+| Processors      | Function |
+| ----------- | ----------- |
+| printer   | prints logs to console|
+
+| Outputs      | Function |
+| ----------- | ----------- |
+| Websockets   | Streams data to Nextjs client|
+| influxdb_v2   | Saves data to influxDB|
+
+### InfluxDB
+
+[Influx DB](https://www.influxdata.com/) is an open-source time series database
+
+# Installation
+
+## Necessary prerequisites for running
+
+This project depends on `docker` to run `eclipse-mosquitto`, `influxdb2` and `telegraf`
+
+1. If you are using Windows, please follow [steps for installing Docker Desktop on Windows.](https://docs.docker.com/desktop/install/windows-install/)
+
+2. If you are using macOS, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Mac](https://docs.docker.com/desktop/install/mac-install/)
+
+3. If you are using Linux, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Linux](https://docs.docker.com/desktop/install/linux-install/)
+
+## How to run ?
+
+1. To get started,  [**download the zip of latest release**](https://github.com/cyator/N2-Avionics-BaseStation/releases/latest/download/release.zip)
+
+2. Navigate to path of the downloaded artifact
+3. Extract `release.zip`
+4. Open the `release` directory in your terminal
+5. Confirm you are in the same directory as the docker-compose.yaml file; Run the following command to start the application in detached shell mode:  
+
+    ```bash
+    #!/bin/bash
+    docker compose up -d
+    ```
+
+or without detaching the shell
+
+ ```bash
+    #!/bin/bash
+    docker compose up
 ```
-touch influxdb.env
-```
-3. In influxdb.env set the following environment variables
 
-```
-DOCKER_INFLUXDB_INIT_MODE=setup
-DOCKER_INFLUXDB_INIT_USERNAME=avionics
-DOCKER_INFLUXDB_INIT_PASSWORD=987654321
-DOCKER_INFLUXDB_INIT_ORG=nakuja
-DOCKER_INFLUXDB_INIT_BUCKET=telemetry
-DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mysupersecrettoken
-```
-4. In the root directory run:
+Confirm that all four containers are running using the following command:
 
-```
-docker compose up -d
+```bash
+    #!/bin/bash
+    docker ps
 ```
 
-5. influxb dashboard is now availabe at localhost:8086
+The following containers should be running
 
-```
-http://localhost:8086
-```
-6. Sign in with username and password set in influxdb.env
+| Container      |  Port |
+| ----------- | ----------- |
+| n2-avionics-basestation   | 3000/tcp    |
+| eclipse-mosquitto   | 1883/tcp   |
+| Telegraf     | 8092/udp, 8125/udp, 8094/tcp |
+| influxdb   | 8086/tcp   |
 
-```
-username=avionics
+## Custom Configuration
+
+This project provides the following `environment variables`
+
+| Variable      | Default |
+| ----------- | ----------- |
+| INFLUXDB_USER | nakuja    |
+| INFLUXDB_PASSWORD | 987654321   |
+| DOCKER_CLIENT_IMAGE   | ghcr.io/cyator/n2-avionics-basestation   |
+
+The `default` environment variables can be `overwritten` using an environment file named `.env` placed in the same directory as the `docker-compose.yaml` file.
+
+For more information checkout the [docs on how to use environment variables with docker compose](https://docs.docker.com/compose/environment-variables/)
+
+`Telegraf` and `eclipse-mosquitto` can be customised using their respective `.conf` files
+
+## Notes
+
+1. This project uses [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) for versioning. Husky is integrated to reject invalid commits. If you are unfamiliar with `conventional commits` we recommend using [commitizen](https://github.com/commitizen/cz-cli)
+2. If you are running a `cloned version of the repo` the `DOCKER_CLIENT_IMAGE` environment variable is required.
+3. The default username and password for the influxdb2 dashboard is :
+
+```text
+username=nakuja
 password=987654321
-```
-7. Everything is ready for use
-
-## Steps to run web app
-
-1. In the client directory, run:
-
-```
-npm install
-```
-
-installs the necessary dependencies for the client app
-
-2. In the node -server directory, run:
-
-```
-```
-
-installs the necessary dependencies for the server app
-
-## How to run in production environment
-
-In the node-server directory, run:
-
-```
-npm run prod
-```
-
-## How to run in development environment
-
-In the node-server directory, you can run:
-
-```
-npm run dev
-```
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-## Running with custom environment variables on client
-
-1. In the client directory create a .env.local file
-
-```
-touch .env.local
-```
-
-2. Add the following values to the .env.local file
-
-```
-REACT_APP_SERVER_URL=ws://<server hostname or ip address>:<server port> or http://<server hostname or ip address>:<server port>
-```
-
-## Running with custom environment variables on server
-
-1. In the node-server directory create a .env file
-
-```
-touch .env
-```
-
-2. Add the following values to the .env file
-
-```
-BROKER_URL=mqtt://<broker hostname or ip address>:<broker port>
-PORT=<server port>
-ORIGIN=http://<client hostname or ip address>:<client port>
-```
-
-## Running with systemd
-
-Suppose you are in the app directory `/home/$USER/foo`
-
-1. Create file, let's call it foo.service
-
-```
-touch foo.service
-```
-
-2. In the file add
-
-```
-[Unit]
-Description=Foo application
-
-[Service]
-User=<USER>
-WorkingDirectory=/home/<USER>/foo
-ExecStart=/usr/bin/npm run prod
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-```
-
-4. Copy unit into systemd folder
-
-```
-sudo cp foo.service /etc/systemd/system
-```
-
-5. Reload daemon
-
-```
-sudo systemctl daemon-reload
-```
-
-6. Enable start on boot
-
-```
-sudo systemctl enable foo.service
-```
-
-## systemd on raspberrypi example
-
-Suppose you are in the app directory `/home/pi/Desktop/base-station`
-
-1. Create file, let's call it bs.service
-
-```
-touch bs.service
-```
-
-2. In the file add
-
-```
-[Unit]
-Description=Nakuja N2 base station software
-
-[Service]
-User=pi
-WorkingDirectory=/home/pi/Desktop/base-station
-ExecStart=/usr/bin/npm run prod
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-```
-
-4. Copy unit into systemd folder
-
-```
-sudo cp bs.service /etc/systemd/system
-```
-
-5. Reload daemon
-
-```
-sudo systemctl daemon-reload
-```
-
-6. Enable start on boot
-
-```
-sudo systemctl enable bs.service
 ```

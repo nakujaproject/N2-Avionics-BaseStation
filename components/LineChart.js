@@ -1,3 +1,4 @@
+import { memo, forwardRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-luxon';
 import StreamingPlugin from 'chartjs-plugin-streaming';
@@ -21,11 +22,10 @@ ChartJS.register(
 	Title,
 	Tooltip,
 	Legend,
-
 	StreamingPlugin
 );
 
-function LineChart({ label, onRefresh }) {
+const LineChart = forwardRef(({ label }, ref) => {
 	const data = {
 		datasets: [
 			{
@@ -42,13 +42,43 @@ function LineChart({ label, onRefresh }) {
 			x: {
 				type: 'realtime',
 				realtime: {
-					delay: 2000,
-					onRefresh: onRefresh,
-					//pause: false,
+					// 	delay: 2000,
+					// pause: false,
 					// ttl: 60000,
 					// duration: 20000,
-					// refresh: 100,
 					// frameRate: 30,
+				},
+				ticks: {
+					font: {
+						size: 15,
+						weight: 'bolder',
+					},
+					color: '#000',
+				},
+				title: {
+					display: true,
+					text: 'Time',
+					font: {
+						size: 24,
+					},
+					color: '#000',
+				},
+			},
+			y: {
+				ticks: {
+					font: {
+						size: 15,
+						weight: 'bolder',
+					},
+					color: '#000',
+				},
+				title: {
+					display: true,
+					text: 'Altitude (m)',
+					font: {
+						size: 24,
+					},
+					color: '#000',
 				},
 			},
 		},
@@ -63,7 +93,8 @@ function LineChart({ label, onRefresh }) {
 		},
 	};
 
-	return <Line data={data} options={options} />;
-}
+	return <Line ref={ref} data={data} options={options} />;
+});
 
-export default LineChart;
+LineChart.displayName = 'LineChart';
+export default memo(LineChart);
