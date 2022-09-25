@@ -47,7 +47,7 @@ This project depends on `docker` to run `eclipse-mosquitto`, `influxdb2` and `te
 
 ## How to run ?
 
-1. To get started,  [**download the zip of latest release**](https://github.com/cyator/N2-Avionics-BaseStation/releases/latest/download/release.zip)
+1. To get started,  [**download the zip of latest release**](https://github.com/nakujaproject/N2-Avionics-BaseStation/releases/latest/download/release.zip)
 
 2. Navigate to path of the downloaded artifact
 3. Extract `release.zip`
@@ -90,7 +90,7 @@ This project provides the following `environment variables`
 | ----------- | ----------- |
 | INFLUXDB_USER | nakuja    |
 | INFLUXDB_PASSWORD | 987654321   |
-| DOCKER_CLIENT_IMAGE   | ghcr.io/cyator/n2-avionics-basestation   |
+| DOCKER_CLIENT_IMAGE   | ghcr.io/nakujaproject/n2-avionics-basestation   |
 
 The `default` environment variables can be `overwritten` using an environment file named `.env` placed in the same directory as the `docker-compose.yaml` file.
 
