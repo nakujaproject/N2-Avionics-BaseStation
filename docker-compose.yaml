@@ -44,7 +44,7 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_ADMIN_TOKEN:-myToken}      
     depends_on:
       - mosquitto
-      - influxdb_cli
+      - influxdb
       - client
     restart: always
   
