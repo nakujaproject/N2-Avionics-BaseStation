@@ -6,6 +6,16 @@ export const useMetrics = (lastJsonMessage) => {
 	const [latitude, setLatitude] = useState(0);
 	const [state, setstate] = useState(0);
 	const [timestamp, setTimestamp] = useState(null);
+	const [filteredAcceleration, setFilteredAcceleration] = useState(0);
+	const [filteredAltitude, setFilteredAltitude] = useState(0);
+	const [filteredVelocity, setFilteredVelocity] = useState(0);
+	const [temperature, setTemperature] = useState(0);
+	const [ax, setAx] = useState(0);
+	const [ay, setAy] = useState(0);
+	const [az, setAz] = useState(0);
+	const [gx, setGx] = useState(0);
+	const [gy, setGy] = useState(0);
+	const [gz, setGz] = useState(0);
 
 	useEffect(() => {
 		console.log('useMetrics useEffect');
@@ -23,7 +33,22 @@ export const useMetrics = (lastJsonMessage) => {
 			if (!metrics[0].timestamp) {
 				throw new Error('timestamp in metrics is undefined');
 			}
-			const { altitude, longitude, latitude, state } = metrics[0].fields;
+			const {
+				altitude,
+				longitude,
+				latitude,
+				state,
+				filtered_s,
+				filtered_v,
+				filtered_a,
+				ax,
+				ay,
+				az,
+				gx,
+				gy,
+				gz,
+				temperature,
+			} = metrics[0].fields;
 			const x = metrics[0].timestamp;
 
 			setAltitude(altitude);
@@ -31,8 +56,18 @@ export const useMetrics = (lastJsonMessage) => {
 			setLatitude(latitude);
 			setstate(state);
 			setTimestamp(x);
+			setAx(ax);
+			setAy(ay);
+			setAz(az);
+			setGx(gx);
+			setGy(gy);
+			setGz(gz);
+			setFilteredAcceleration(filtered_a);
+			setFilteredAltitude(filtered_s);
+			setFilteredVelocity(filtered_v);
+			setTemperature(temperature);
 		} catch (error) {
-			console.error('useEffect error', error.message);
+			console.log('useEffect error', error.message);
 		}
 	}, [lastJsonMessage]);
 
@@ -42,5 +77,15 @@ export const useMetrics = (lastJsonMessage) => {
 		longitude,
 		state,
 		timestamp,
+		filteredAcceleration,
+		filteredAltitude,
+		filteredVelocity,
+		temperature,
+		ax,
+		ay,
+		az,
+		gx,
+		gy,
+		gz,
 	};
 };

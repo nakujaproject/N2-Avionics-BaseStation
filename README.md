@@ -43,7 +43,29 @@ This project depends on `docker` to run `eclipse-mosquitto`, `influxdb2` and `te
 
 2. If you are using macOS, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Mac](https://docs.docker.com/desktop/install/mac-install/)
 
-3. If you are using Linux, please be sure to follow the steps outlined in [Docker Docs for how to install Docker Desktop for Linux](https://docs.docker.com/desktop/install/linux-install/)
+3. If you are using Linux, please be sure to follow the steps outlined in Docker Docs for how to install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/) and [Docker Desktop for linux](https://docs.docker.com/desktop/install/linux-install/)
+
+## Docker post-install for linux
+
+1. Create a docker group
+
+    ```bash
+        #!/bin/bash
+    sudo groupadd docker
+    ```
+
+2. Add your user to the `docker` group.
+
+    ```bash
+        #!/bin/bash
+    sudo usermod -aG docker $USER
+    ```
+
+3. Log out and log back in so that your group membership is re-evaluated.
+
+4. Verify that you can run `docker` commands without `sudo`.
+
+5. For more information follow this [link](https://docs.docker.com/engine/install/linux-postinstall/)
 
 ## How to run ?
 
