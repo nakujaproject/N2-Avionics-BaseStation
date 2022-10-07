@@ -8,7 +8,7 @@ services:
   mosquitto:
     image: eclipse-mosquitto:2.0.14
     ports:
-      - "1883:1883"   
+      - 1883:1883   
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf 
       - mosquitto-data:/mosquitto/data
@@ -21,7 +21,7 @@ services:
       # Mount for influxdb data directory and configuration
       - influxdb2:/var/lib/influxdb2
     ports:
-      - "8086:8086"
+      - 8086:8086
     environment: 
       # Use these same configurations parameters in your telegraf configuration, mytelegraf.conf.
       - DOCKER_INFLUXDB_INIT_MODE=setup

@@ -25,19 +25,122 @@ ChartJS.register(
 	StreamingPlugin
 );
 
-const LineChart = forwardRef(({ label }, ref) => {
+const LineChart = forwardRef(({ type }, ref) => {
+	let dataset;
+	let ylabel;
+
+	switch (type) {
+		case 'altitude':
+			dataset = [
+				{
+					id: 1,
+					label: 'filtered altitude',
+					backgroundColor: 'rgba(255, 99, 132, 0.5)',
+					borderColor: 'rgb(255, 99, 132)',
+					data: [],
+					borderWidth: 2,
+					pointRadius: 2,
+				},
+				{
+					id: 2,
+					label: 'raw altitude',
+					backgroundColor: 'rgba(54, 162, 235, 0.5)',
+					borderColor: 'rgb(54, 162, 235)',
+					data: [],
+					pointRadius: 2,
+				},
+			];
+
+			ylabel = 'Altitude (m)';
+			break;
+		case 'velocity':
+			dataset = [
+				{
+					id: 1,
+					label: 'filtered velocity',
+					backgroundColor: 'rgba(255, 99, 132, 0.5)',
+					borderColor: 'rgb(255, 99, 132)',
+					data: [],
+				},
+			];
+			ylabel = 'Velocity (m/s)';
+			break;
+		case 'acceleration':
+			dataset = [
+				{
+					id: 1,
+					label: 'filtered acceleration',
+					backgroundColor: 'rgba(255, 99, 132, 0.5)',
+					borderColor: 'rgb(255, 99, 132)',
+					data: [],
+				},
+				{
+					id: 2,
+					label: 'ax',
+					backgroundColor: 'rgba(54, 162, 235, 0.5)',
+					borderColor: 'rgb(54, 162, 235)',
+					data: [],
+				},
+				{
+					id: 3,
+					label: 'ay',
+					borderColor: 'rgb(255,165,0)',
+					backgroundColor: 'rgb(255,165,0,0.1)',
+					data: [],
+				},
+				{
+					id: 4,
+					label: 'az',
+					borderColor: 'rgb(60,186,159)',
+					backgroundColor: 'rgb(60,186,159,0.1)',
+					data: [],
+				},
+			];
+
+			ylabel = `Acceleration`;
+			break;
+		case 'gyroscope':
+			dataset = [
+				{
+					id: 1,
+					label: 'gx',
+					backgroundColor: 'rgba(54, 162, 235, 0.5)',
+					borderColor: 'rgb(54, 162, 235)',
+					data: [],
+				},
+				{
+					id: 2,
+					label: 'gy',
+					borderColor: 'rgb(255,165,0)',
+					backgroundColor: 'rgb(255,165,0,0.1)',
+					data: [],
+				},
+				{
+					id: 3,
+					label: 'gz',
+					borderColor: 'rgb(60,186,159)',
+					backgroundColor: 'rgb(60,186,159,0.1)',
+					data: [],
+				},
+			];
+			ylabel = 'Gyroscope';
+			break;
+
+		default:
+			break;
+	}
+
 	const data = {
-		datasets: [
-			{
-				label: label,
-				backgroundColor: 'rgba(255, 99, 132, 0.5)',
-				borderColor: 'rgb(255, 99, 132)',
-				data: [],
-			},
-		],
+		datasets: dataset,
 	};
 
 	const options = {
+		datasets: {
+			line: {
+				borderWidth: 1,
+				pointRadius: 1,
+			},
+		},
 		scales: {
 			x: {
 				type: 'realtime',
@@ -50,7 +153,7 @@ const LineChart = forwardRef(({ label }, ref) => {
 				},
 				ticks: {
 					font: {
-						size: 15,
+						size: 12,
 						weight: 'bolder',
 					},
 					color: '#000',
@@ -59,7 +162,8 @@ const LineChart = forwardRef(({ label }, ref) => {
 					display: true,
 					text: 'Time',
 					font: {
-						size: 24,
+						size: 18,
+						weight: 'bolder',
 					},
 					color: '#000',
 				},
@@ -74,9 +178,10 @@ const LineChart = forwardRef(({ label }, ref) => {
 				},
 				title: {
 					display: true,
-					text: 'Altitude (m)',
+					text: ylabel,
 					font: {
-						size: 24,
+						size: 18,
+						weight: 'bolder',
 					},
 					color: '#000',
 				},
@@ -85,9 +190,10 @@ const LineChart = forwardRef(({ label }, ref) => {
 		plugins: {
 			legend: {
 				position: 'top',
+				align: 'end',
 			},
 			title: {
-				display: true,
+				display: false,
 				text: 'Telemetry Graph',
 			},
 		},
