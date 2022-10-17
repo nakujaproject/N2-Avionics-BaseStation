@@ -1,5 +1,7 @@
 import Head from 'next/head';
 
+import getConfig from 'next/config';
+import Image from 'next/image';
 import { format } from 'date-fns';
 import { useState, useEffect, useRef } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
@@ -8,6 +10,10 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 import LineChart from '../components/LineChart';
 import { useMetrics } from '../hooks/useMetrics';
 import Controls from '../components/Controls';
+import Video from '../components/Video';
+
+//runtime config
+const { publicRuntimeConfig } = getConfig();
 
 function Home() {
 	const altitudeChartRef = useRef();
@@ -15,7 +21,10 @@ function Home() {
 	const accelerationChartRef = useRef();
 	const gyroscopeChartRef = useRef();
 
-	const [socketUrl] = useState('ws://localhost:3000');
+	const [socketUrl] = useState(
+		publicRuntimeConfig.SERVER_URL || 'ws://localhost:3000'
+	);
+	console.log('socketUrl', socketUrl);
 
 	const { lastJsonMessage, readyState } = useWebSocket(socketUrl, {
 		share: true,
@@ -54,14 +63,17 @@ function Home() {
 		if (!isCancelled) {
 			const filtered = altitudeChartRef.current?.data.datasets[0]?.data;
 			const raw = altitudeChartRef.current?.data.datasets[1]?.data;
-			filtered.push({
-				x: timestamp,
-				y: filteredAltitude,
-			});
-			raw.push({
-				x: timestamp,
-				y: altitude,
-			});
+
+			filteredAltitude &&
+				filtered.push({
+					x: timestamp,
+					y: filteredAltitude,
+				});
+			altitude &&
+				raw.push({
+					x: timestamp,
+					y: altitude,
+				});
 			altitudeChartRef.current.update('quiet');
 		}
 		return () => {
@@ -142,7 +154,7 @@ function Home() {
 	}, [timestamp, gx, gy, gz]);
 
 	return (
-		<div className="max-h-screen max-w-screen overflow-hidden">
+		<div className="lg:max-h-screen max-w-screen overflow-hidden">
 			<Head>
 				<title>Base Station</title>
 				<meta
@@ -177,10 +189,10 @@ function Home() {
 							</div>
 						</div> */}
 
-				<div className="text-center">
+				<div className="text-sm lg:text-base text-center">
 					The WebSocket is currently {connectionStatus}
 				</div>
-				<div className="w-2/3 flex justify-between mx-auto font-bold">
+				<div className="text-xs lg:text-base md:w-2/3 mx-auto font-bold flex flex-wrap justify-between">
 					<span>
 						Timestamp:{' '}
 						{timestamp
@@ -192,29 +204,25 @@ function Home() {
 					<span>Longitude:{longitude} </span>
 					<span>Latitude: {latitude} </span>
 				</div>
-				<div className="grid grid-cols-3">
-					<div className="w-10/12 col-span-2">
+				<div className="grid grid-cols-1 lg:grid-cols-3">
+					<div>
+						<Video />
+					</div>
+					<div className="lg:order-first w-full lg:w-10/12 lg:col-span-2">
 						<LineChart ref={altitudeChartRef} type="altitude" />
 					</div>
-					<div>
-						<iframe
-							className="aspect-[4/3] w-full"
-							src="http://192.168.4.4:81/stream"
-							allow="autoplay"
-						/>
-					</div>
 				</div>
-				<div className="grid grid-cols-3">
-					<div className="w-11/12">
+				<div className="grid grid-cols-1 lg:grid-cols-3">
+					<div className="w-full lg:w-11/12">
 						<LineChart ref={velocityChartRef} type="velocity" />
 					</div>
-					<div className="w-11/12">
+					<div className="w-full lg:w-11/12">
 						<LineChart
 							ref={accelerationChartRef}
 							type="acceleration"
 						/>
 					</div>
-					<div className="w-11/12">
+					<div className="w-full lg:w-11/12">
 						<LineChart ref={gyroscopeChartRef} type="gyroscope" />
 					</div>
 				</div>

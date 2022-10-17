@@ -5,6 +5,8 @@ services:
     restart: always
     ports:
       - 3000:3000
+    environment:
+    - SERVER_URL=${SERVER_URL:-ws://192.168.4.2:3000} 
   mosquitto:
     image: eclipse-mosquitto:2.0.14
     ports:
