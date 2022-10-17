@@ -10,6 +10,7 @@ const nextConfig = {
 	},
 	publicRuntimeConfig: {
 		SERVER_URL: process.env.SERVER_URL,
+		CAMERA_URL: process.env.CAMERA_URL,
 	},
 };
 

@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 
-function Video() {
+function Video({ url }) {
+	console.log('video', url);
 	const image = useRef();
 	const [error, setError] = useState(false);
 
@@ -35,7 +36,7 @@ function Video() {
 			) : (
 				<Image
 					alt="stream"
-					src="http://192.168.4.4:81/stream"
+					src={url}
 					width={800}
 					height={600}
 					layout="responsive"

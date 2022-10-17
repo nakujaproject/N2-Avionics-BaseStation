@@ -206,7 +206,12 @@ function Home() {
 				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-3">
 					<div>
-						<Video />
+						<Video
+							url={
+								publicRuntimeConfig.CAMERA_URL ||
+								'http://192.168.0.103:81/stream'
+							}
+						/>
 					</div>
 					<div className="lg:order-first w-full lg:w-10/12 lg:col-span-2">
 						<LineChart ref={altitudeChartRef} type="altitude" />
