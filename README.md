@@ -1,5 +1,6 @@
-# Overview  [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+# Overview 
 
+If you are looking to contribute please check out `CONTRIBUTION.md`
 ## How does it work ?
 
 ![architecture](./public/ground%20station.png)
@@ -110,9 +111,10 @@ This project provides the following `environment variables`
 
 | Variable      | Default |
 | ----------- | ----------- |
-| INFLUXDB_USER | nakuja    |
-| INFLUXDB_PASSWORD | 987654321   |
-| DOCKER_CLIENT_IMAGE   | ghcr.io/nakujaproject/n2-avionics-basestation   |
+| SERVER_URL | ws://192.168.4.2:3000 |
+| INFLUXDB_USER | nakuja |
+| INFLUXDB_PASSWORD | 987654321 |
+| DOCKER_CLIENT_IMAGE   | ghcr.io/nakujaproject/n2-avionics-basestation |
 
 The `default` environment variables can be `overwritten` using an environment file named `.env` placed in the same directory as the `docker-compose.yaml` file.
 
@@ -120,11 +122,9 @@ For more information checkout the [docs on how to use environment variables with
 
 `Telegraf` and `eclipse-mosquitto` can be customised using their respective `.conf` files
 
-## Notes
+## Note
 
-1. This project uses [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) for versioning. Husky is integrated to reject invalid commits. If you are unfamiliar with `conventional commits` we recommend using [commitizen](https://github.com/commitizen/cz-cli)
-2. If you are running a `cloned version of the repo` the `DOCKER_CLIENT_IMAGE` environment variable is required.
-3. The default username and password for the influxdb2 dashboard is :
+The default username and password for the influxdb2 dashboard is :
 
 ```text
 username=nakuja

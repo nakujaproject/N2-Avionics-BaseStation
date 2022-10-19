@@ -5,6 +5,9 @@ services:
     restart: always
     ports:
       - 3000:3000
+    environment:
+    - SERVER_URL=${SERVER_URL:-ws://192.168.0.100:3000} 
+    - CAMERA_URL=${CAMERA_URL:-http://192.168.0.103:81/stream} 
   mosquitto:
     image: eclipse-mosquitto:2.0.14
     ports:
