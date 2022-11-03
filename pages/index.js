@@ -65,11 +65,13 @@ function Home() {
 			const raw = altitudeChartRef.current?.data.datasets[1]?.data;
 
 			filteredAltitude &&
+				filteredAltitude !== 0 &&
 				filtered.push({
 					x: timestamp,
 					y: filteredAltitude,
 				});
 			altitude &&
+				altitude !== 0 &&
 				raw.push({
 					x: timestamp,
 					y: altitude,
