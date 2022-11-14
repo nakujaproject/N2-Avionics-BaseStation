@@ -26,11 +26,14 @@ function Home() {
 	);
 	console.log('socketUrl', socketUrl);
 
-	const { lastJsonMessage, readyState } = useWebSocket(socketUrl, {
-		share: true,
-		//Will attempt to reconnect on all close events, such as server shutting down
-		shouldReconnect: (closeEvent) => true,
-	});
+	const { lastJsonMessage, readyState, sendJsonMessage } = useWebSocket(
+		socketUrl,
+		{
+			share: true,
+			//Will attempt to reconnect on all close events, such as server shutting down
+			shouldReconnect: (closeEvent) => true,
+		}
+	);
 
 	const connectionStatus = {
 		[ReadyState.CONNECTING]: 'Connecting',
@@ -166,12 +169,11 @@ function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className="p-2">
-				{/* <div>
-					<h1 className="text-4xl font-bold">
-						Welcome to Base Station
-					</h1>
-
+			<main className="p-1">
+				<div className="text-sm lg:text-base text-center">
+					The WebSocket is currently {connectionStatus}
+				</div>
+				<div className="justify-center flex">
 					<div className="inline-flex py-2" role="group">
 						<Controls
 							readyState={readyState}
@@ -183,16 +185,7 @@ function Home() {
 							sendJsonMessage={sendJsonMessage}
 							mode="eject"
 						/>
-						<Controls
-							readyState={readyState}
-							sendJsonMessage={sendJsonMessage}
-							mode="eject2"
-							/>
-							</div>
-						</div> */}
-
-				<div className="text-sm lg:text-base text-center">
-					The WebSocket is currently {connectionStatus}
+					</div>
 				</div>
 				<div className="text-xs lg:text-base md:w-2/3 mx-auto font-bold flex flex-wrap justify-between">
 					<span>
@@ -206,6 +199,7 @@ function Home() {
 					<span>Longitude:{longitude} </span>
 					<span>Latitude: {latitude} </span>
 				</div>
+
 				<div className="grid grid-cols-1 lg:grid-cols-3">
 					<div>
 						<Video
