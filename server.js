@@ -13,9 +13,13 @@ const { connectMQTT, handlePublish } = require('./config/mqtt');
 app.prepare().then(() => {
 	const expressApp = express();
 	const server = createServer(expressApp);
-
+	console.log('node env', process.env.NODE_ENV);
+	const mqtt_url =
+		process.env.NODE_ENV === 'production'
+			? 'mqtt://mosquitto:1883'
+			: 'mqtt://localhost:1883';
 	//connect mqtt
-	const MQTTClient = connectMQTT();
+	const MQTTClient = connectMQTT(mqtt_url);
 	//handle websocket connection
 	const wss = new WebSocketServer({ noServer: true });
 	console.log('websocket server created');

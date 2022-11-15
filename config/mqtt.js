@@ -1,9 +1,10 @@
 const mqtt = require('mqtt');
+
 module.exports = {
-	connectMQTT: () => {
-		const client = mqtt.connect(
-			process.env.MQTT_URI || 'mqtt://localhost:1883'
-		);
+	connectMQTT: (url) => {
+		console.log('mqtt url', url);
+		const client = mqtt.connect(url);
+		console.log('mqtt connection status', client.connected);
 
 		client.on('connect', (connack) => {
 			console.log('node connected to mosquitto', connack);
@@ -14,9 +15,17 @@ module.exports = {
 				console.log(granted, 'granted');
 			});
 		});
+		client.on('error', (error) => {
+			console.log('mqtt error', error);
+		});
+
 		return client;
 	},
 	handlePublish: (client, message) => {
+		if (!client.connected) {
+			console.log('Mqtt not connected to mosquitto');
+		}
+
 		const { mode, status } = message;
 		if (!mode || !status) return;
 
