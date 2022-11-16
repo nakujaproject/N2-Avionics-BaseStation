@@ -23,6 +23,9 @@ COPY . ./
 
 #ARG MQTT_URI
 #ENV MQTT_URI=$MQTT_URI
+ENV NEXTAUTH_URL=http://localhost:3000
+ENV NEXTAUTH_SECRET="lYa2X1BtF4GFAlAYnCv72gD9nDnvkYfx9kst2fgdsjo="
+
 # Uncomment the following line to disable telemetry at build time
 # ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -58,7 +61,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.env.production ./.env.production
 
 # Environment variables must be redefined at run time
 #ARG MQTT_URI
-#ENV MQTT_URI=$MQTT_URI
+ENV NEXTAUTH_URL=http://localhost:3000
+ENV NEXTAUTH_SECRET="lYa2X1BtF4GFAlAYnCv72gD9nDnvkYfx9kst2fgdsjo="
 
 # Uncomment the following line to disable telemetry at run time
 # ENV NEXT_TELEMETRY_DISABLED 1

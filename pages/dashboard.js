@@ -175,7 +175,7 @@ function Dashboard() {
 			</Head>
 
 			<main className="p-1">
-				<div className="text-sm lg:text-base text-center">
+				<div className="py-2 lg:py-0 text-sm lg:text-base text-center">
 					The WebSocket is currently {connectionStatus}
 				</div>
 				<div className="absolute py-2 px-4 top-0 left-0">

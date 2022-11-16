@@ -25,11 +25,11 @@ function Home() {
 				<h1 className="font-medium leading-tight text-4xl">
 					Nakuja Project
 				</h1>
-				<button className="my-4 bg-transparent hover:bg-blue-500 text-blue-700 text-sm font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent w-1/6 h-16">
+				<button className="my-4 bg-transparent hover:bg-blue-500 text-blue-700 text-sm font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent w-2/6 lg:w-1/6 h-16">
 					<Link href="/dashboard">Dashboard</Link>
 				</button>
 				<button
-					className="my-4 bg-transparent hover:bg-blue-500 text-blue-700 text-sm font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent  w-1/6 h-16"
+					className="my-4 bg-transparent hover:bg-blue-500 text-blue-700 text-sm font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent  w-2/6 lg:w-1/6 h-16"
 					onClick={() => signIn()}
 				>
 					Login

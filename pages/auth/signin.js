@@ -31,7 +31,7 @@ function Signin() {
 	};
 
 	return (
-		<div className="w-screen h-screen flex justify-center items-center bg-green-100">
+		<div className="max-w-screen h-screen flex justify-center items-center bg-green-100">
 			<div>
 				{error && (
 					<div

@@ -31,13 +31,13 @@ module.exports = {
 
 		switch (mode) {
 			case 'ignite':
-				publish(client, 'esp32/ignite', status);
+				publish(client, 'controls/ignite', status);
 				break;
 			case 'eject':
-				publish(client, 'esp32/ejection', status);
+				publish(client, 'controls/ejection', status);
 				break;
 			case 'eject2':
-				publish(client, 'esp32/ejection2', status);
+				publish(client, 'controls/ejection2', status);
 				break;
 			default:
 				break;
