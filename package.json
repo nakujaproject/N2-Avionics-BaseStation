@@ -19,7 +19,8 @@
 		"react-use-websocket": "^4.2.0",
 		"sharp": "^0.31.1",
 		"uuid": "^9.0.0",
-		"ws": "^8.8.1"
+		"ws": "^8.8.1",
+		"mapbox-gl": "^2.9.2"
 	},
 	"scripts": {
 		"dev": "node server.js",
