@@ -114,7 +114,7 @@ This project provides the following `environment variables`
 | SERVER_URL | ws://192.168.4.2:3000 |
 | INFLUXDB_USER | nakuja |
 | INFLUXDB_PASSWORD | 987654321 |
-| DOCKER_CLIENT_IMAGE   | ghcr.io/nakujaproject/n2-avionics-basestation |
+| DOCKER_CLIENT_IMAGE   | ghcr.io/nakujaproject/n2-avionics-basestation:latest |
 
 The `default` environment variables can be `overwritten` using an environment file named `.env` placed in the same directory as the `docker-compose.yaml` file.
 

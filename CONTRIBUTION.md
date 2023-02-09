@@ -31,3 +31,32 @@ This project uses [conventional commits](https://www.conventionalcommits.org/en/
 ## Merging Pull Requests
 
 Once a PR is in its final state it needs to be merged into the upstream master branch. For that please `DO NOT` use the Github merge button! But merge it yourself on the command line. Reason is that we want to hvae a clean history. Before pushing the changes to upstream master make sure that all individual commits have been `squashed` into a single one with a commit message.
+
+# Github Container Registry (ghcr)
+
+The docker image is hosted on <a href="https://github.com/nakujaproject/N2-Avionics-BaseStation/pkgs/container/n2-avionics-basestation">ghcr.io</a> container registry
+
+
+## Push to ghcr
+
+First <a href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry">authenticate</a> docker to ghcr using a token obtained from <a href="https://github.com/settings/tokens">github settings</a>
+
+`export CR_PAT=YOUR_TOKEN`
+
+`echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin`
+
+While in the cloned folder build the docker
+
+`docker build . -t ghcr.io/nakujaproject/n2-avionics-basestation:latest`
+
+If there is an already built image, tag image using image ID
+
+`docker tag <imageID> ghcr.io/nakujaproject/n2-avionics-basestation:latest`
+
+Finally push the image
+
+`docker push ghcr.io/nakujaproject/n2-avionics-basestation:latest`
+
+For changes to reflect in running containers, shutdown running containers bound to port 3000 and run
+
+`docker-compose up --build`
