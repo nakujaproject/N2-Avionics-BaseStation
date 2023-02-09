@@ -12,6 +12,9 @@ import { useMetrics } from '../hooks/useMetrics';
 import Controls from '../components/Controls';
 import Video from '../components/Video';
 
+//mapbox css
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 //runtime config
 const { publicRuntimeConfig } = getConfig();
 
